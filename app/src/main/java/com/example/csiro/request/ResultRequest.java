@@ -17,6 +17,5 @@ public interface ResultRequest {
     Call<ResponseObject> uploadPic(@Part MultipartBody.Part file);
 
     @GET("/result/getResult")
-    Call<ResponseObject> getResult(@Query("resultId")String id);
-
+    Call<ResponseObject<Result>> getResult(@Query("resultId")String id);
 }

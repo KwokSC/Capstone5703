@@ -2,11 +2,9 @@ package com.example.csiro;
 
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.View;
+import android.util.Log;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -14,9 +12,21 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.csiro.databinding.ActivityMainBinding;
+import com.example.csiro.entity.ResponseObject;
+import com.example.csiro.entity.Result;
+import com.example.csiro.request.ResultRequest;
+import com.example.csiro.util.ClientConnection;
 
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.io.IOException;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,13 +46,20 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
+        ClientConnection.connectionBuild("http://10.16.57.70/");
+
+        ResultRequest request = ClientConnection.retrofit.create(ResultRequest.class);
+        new Thread(new Runnable() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void run() {
+                try {
+                    Response<ResponseObject<Result>> response = request.getResult("").execute();
+                    Log.i("TAG", "content is: "+response.body().getData().toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        });
+        }).start();
     }
 
     @Override
@@ -60,8 +77,14 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.menu_user:
+                Log.i("TAG", "User selected");
+                break;
+
+            case R.id.menu_settings:
+                Log.i("TAG", "Setting selected");
+                break;
         }
 
         return super.onOptionsItemSelected(item);
