@@ -39,10 +39,15 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // Retrofit Framework and Gson Converter
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+
+    // Okhttp3 Interceptor: Print Logs
     implementation 'com.squareup.okhttp3:logging-interceptor:3.14.+'
 
+    // TensorFlow Android Platform Implementation
     implementation 'org.tensorflow:tensorflow-android:1.13.1'
 }

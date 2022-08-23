@@ -1,14 +1,26 @@
 package com.example.csiro;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.csiro.databinding.FragmentPredictionBinding;
+import com.example.csiro.entity.ResponseObject;
+import com.example.csiro.entity.Result;
+import com.example.csiro.request.ResultRequest;
+import com.example.csiro.util.ClientConnection;
+
+import java.io.IOException;
+
+import retrofit2.Response;
 
 public class FirstFragment extends Fragment {
 
@@ -32,7 +44,24 @@ public class FirstFragment extends Fragment {
         binding.buttonCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                try{
+                    Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                ResultRequest request = ClientConnection.retrofit.create(ResultRequest.class);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Response<ResponseObject<Result>> response = request.getResult("").execute();
+                            Result result = response.body().getData();
+                            binding.textViewResult.setText(result.getPositive().toString());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
             }
         });
 
@@ -40,7 +69,11 @@ public class FirstFragment extends Fragment {
         binding.buttonAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                try{
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
     }

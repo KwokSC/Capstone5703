@@ -13,6 +13,7 @@
         android:id="@+id/textView_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
         android:gravity="center"
         android:textSize="12pt"/>
 
@@ -21,6 +22,7 @@
         android:id="@+id/imageView_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
         android:layout_gravity="center"/>
 
     <LinearLayout
@@ -31,12 +33,14 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
             android:text="@string/camera" />
         <Button
             android:id="@+id/button_album"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
             android:text="@string/album" />
     </LinearLayout>
 

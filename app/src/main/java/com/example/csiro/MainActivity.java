@@ -46,20 +46,7 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        ClientConnection.connectionBuild("http://10.16.57.70/");
-
-        ResultRequest request = ClientConnection.retrofit.create(ResultRequest.class);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Response<ResponseObject<Result>> response = request.getResult("").execute();
-                    Log.i("TAG", "content is: "+response.body().getData().toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        ClientConnection.connectionBuild("http://10.16.57.70:8080/");
     }
 
     @Override

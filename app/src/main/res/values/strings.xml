@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">RAT Test box Recognition</string>
-    <string name="menu_settings">Settings</string>
+
+    <!-- Strings used for menu items-->
     <string name="menu_user">User</string>>
+    <string name="menu_history">History</string>
+    <string name="menu_feedback">Feedback</string>
+    <string name="menu_settings">Settings</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">Prediction Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
