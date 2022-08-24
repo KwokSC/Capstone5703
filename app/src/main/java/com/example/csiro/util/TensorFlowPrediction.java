@@ -2,26 +2,26 @@ package com.example.csiro.util;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.util.Log;
 
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
-import java.net.URI;
-
 public class TensorFlowPrediction {
 
+    // Input Shape
     private static final int IN_COL = 1;
     private static final int IN_ROW = 299*299;
-    private static final int OUT_COL = 1;
+
+    // Output Shape
+    private static final int OUT_COL = 3;
     private static final int OUT_ROW = 1;
 
     // Input Name of the Model
-    private static final String inputName = "input/x_input";
+    private static final String INPUT_NAME = "input";
     // Output Name of the Model
-    private static final String outputName = "output";
+    private static final String OUTPUT_NAME = "output";
 
     TensorFlowInferenceInterface tensorFlowInferenceInterface;
     static {System.loadLibrary("tensorflow_inference");}
@@ -35,27 +35,25 @@ public class TensorFlowPrediction {
         float[] inputData = bitmapToFloatArray(bitmap,299,299);
 
         // Give the Input Data to TensorFlow Interface with the Predefined Model
-        tensorFlowInferenceInterface.feed(inputName, inputData, IN_COL, IN_ROW);
-
-        // Define the Output Variable
-        String[] outputNames = new String[] {outputName};
+        tensorFlowInferenceInterface.feed(INPUT_NAME, inputData, IN_COL, IN_ROW);
 
         // Execute the TensorFlow Interface
-        tensorFlowInferenceInterface.run(outputNames);
+        tensorFlowInferenceInterface.run(new String[] {OUTPUT_NAME});
 
-        //
+        // Define the Output Variable with Specific Shape
         int[] outputs = new int[OUT_COL*OUT_ROW];
 
-        tensorFlowInferenceInterface.fetch(outputName, outputs);
+        // Fetch the Prediction Result and Save it in the Output Variable
+        tensorFlowInferenceInterface.fetch(OUTPUT_NAME, outputs);
 
         return outputs[0];
     }
 
-    public static float[] bitmapToFloatArray(Bitmap bitmap, int rx, int ry){
+    public static float[] bitmapToFloatArray(Bitmap bitmap, int x, int y){
         int height = bitmap.getHeight();
         int width = bitmap.getWidth();
-        float scaleWidth = ((float) rx) / width;
-        float scaleHeight = ((float) ry) / height;
+        float scaleWidth = ((float) x) / width;
+        float scaleHeight = ((float) y) / height;
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight);
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
