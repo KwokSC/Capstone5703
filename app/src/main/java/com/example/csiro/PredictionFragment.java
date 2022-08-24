@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import retrofit2.Response;
 
-public class FirstFragment extends Fragment {
+public class PredictionFragment extends Fragment {
 
     private FragmentPredictionBinding binding;
 

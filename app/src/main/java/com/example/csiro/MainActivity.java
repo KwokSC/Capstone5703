@@ -12,21 +12,11 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.csiro.databinding.ActivityMainBinding;
-import com.example.csiro.entity.ResponseObject;
-import com.example.csiro.entity.Result;
-import com.example.csiro.request.ResultRequest;
+
 import com.example.csiro.util.ClientConnection;
 
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.io.IOException;
-
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,11 +56,17 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         switch (id){
             case R.id.menu_user:
-                Log.i("TAG", "User selected");
+                Log.i("MENU", "User selected");
                 break;
 
+            case R.id.menu_history:
+                Log.i("MENU","History selected");
+
+            case R.id.menu_feedback:
+                Log.i("MENU", "Feedback selected");
+
             case R.id.menu_settings:
-                Log.i("TAG", "Setting selected");
+                Log.i("MENU", "Setting selected");
                 break;
         }
 
