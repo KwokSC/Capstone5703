@@ -3,11 +3,9 @@ package com.example.csiro;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -25,6 +23,8 @@ import retrofit2.Response;
 public class PredictionFragment extends Fragment {
 
     private FragmentPredictionBinding binding;
+    private Intent intent_capture;
+    private Intent intent_prediction;
 
     @Override
     public View onCreateView(
@@ -45,7 +45,10 @@ public class PredictionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try{
-                    Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent_capture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent_prediction = new Intent(getActivity(), PredictionActivity.class);
+                    startActivity(intent_capture);
+                    startActivity(intent_prediction);
                 }catch (Exception e){
                     e.printStackTrace();
                 }

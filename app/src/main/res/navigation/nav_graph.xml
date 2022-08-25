@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/PredictionFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.csiro.FirstFragment"
+        android:id="@+id/PredictionFragment"
+        android:name="com.example.csiro.PredictionFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_prediction">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            android:id="@+id/action_PredictionFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
     </fragment>
     <fragment
@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_second">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_SecondFragment_to_PredictionFragment"
+            app:destination="@id/PredictionFragment" />
     </fragment>
 </navigation>

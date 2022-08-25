@@ -26,7 +26,7 @@ public class TensorFlowPrediction {
     TensorFlowInferenceInterface tensorFlowInferenceInterface;
     static {System.loadLibrary("tensorflow_inference");}
 
-    TensorFlowPrediction(AssetManager assetManager, String modelPath){
+    public TensorFlowPrediction(AssetManager assetManager, String modelPath){
         tensorFlowInferenceInterface = new TensorFlowInferenceInterface(assetManager,modelPath);
     }
 
@@ -50,26 +50,35 @@ public class TensorFlowPrediction {
     }
 
     public static float[] bitmapToFloatArray(Bitmap bitmap, int x, int y){
+
+        // Obtain Height & Weight of Bitmap
         int height = bitmap.getHeight();
         int width = bitmap.getWidth();
+
+        // Calculate the Ratio of Scale Shape
         float scaleWidth = ((float) x) / width;
         float scaleHeight = ((float) y) / height;
+
+        // Transform the Bitmap to Specific Shape
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight);
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
         Log.i("TAG","bitmap width:"+bitmap.getWidth()+",height:"+bitmap.getHeight());
         Log.i("TAG","bitmap.getConfig():"+bitmap.getConfig());
+
+        // Obtain the Transformed Bitmap for Iteration
         height = bitmap.getHeight();
         width = bitmap.getWidth();
+
         float[] result = new float[height*width];
         int k = 0;
         for(int j = 0;j < height;j++){
             for (int i = 0;i < width;i++){
-                int argb = bitmap.getPixel(i,j);
-                int r = Color.red(argb);
-                int g = Color.green(argb);
-                int b = Color.blue(argb);
-                int a = Color.alpha(argb);
+                int pixel = bitmap.getPixel(i,j);
+                int r = Color.red(pixel);
+                int g = Color.green(pixel);
+                int b = Color.blue(pixel);
+                int a = Color.alpha(pixel);
                 assert(r==g && g==b);
                 result[k++] = r / 255.0f;
             }
