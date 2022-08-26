@@ -12,7 +12,7 @@ public class TensorFlowPrediction {
 
     // Input Shape
     private static final int IN_COL = 1;
-    private static final int IN_ROW = 299*299;
+    private static final int IN_ROW = 300*300;
 
     // Output Shape
     private static final int OUT_COL = 3;
@@ -46,7 +46,9 @@ public class TensorFlowPrediction {
         // Fetch the Prediction Result and Save it in the Output Variable
         tensorFlowInferenceInterface.fetch(OUTPUT_NAME, outputs);
 
-        return outputs[0];
+        int result = getResult(outputs, 1);
+
+        return result;
     }
 
     public static float[] bitmapToFloatArray(Bitmap bitmap, int x, int y){
@@ -84,5 +86,15 @@ public class TensorFlowPrediction {
             }
         }
         return result;
+    }
+
+    public int getResult(int[] outputs, int max){
+        int index = 0;
+        for(int i = 0;i<outputs.length;i++){
+            if(outputs[i]==max){
+                index = i;
+            }
+        }
+        return  index;
     }
 }

@@ -8,6 +8,8 @@ public class Result {
 
     private Date uploadDate;
 
+    private String boxBrand;
+
     private Boolean isPositive;
 
     private double reliability;
@@ -27,6 +29,10 @@ public class Result {
     public void setUploadDate(Date uploadDate) {
         this.uploadDate = uploadDate;
     }
+
+    public String getBoxBrand() { return boxBrand; }
+
+    public void setBoxBrand(String boxBrand) { this.boxBrand = boxBrand; }
 
     public Boolean getPositive() {
         return isPositive;

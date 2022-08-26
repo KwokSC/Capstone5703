@@ -13,6 +13,7 @@
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.2033514492753623" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.2760416666666667" />
         <entry key="app/src/main/res/xml/network_security_config.xml" value="0.18614130434782608" />
+        <entry key="app/src/main/res/xml/provider_paths.xml" value="0.1" />
       </map>
     </option>
   </component>

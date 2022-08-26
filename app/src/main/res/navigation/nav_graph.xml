@@ -10,17 +10,16 @@
         android:name="com.example.csiro.PredictionFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_prediction">
-
         <action
             android:id="@+id/action_PredictionFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.example.csiro.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
-
         <action
             android:id="@+id/action_SecondFragment_to_PredictionFragment"
             app:destination="@id/PredictionFragment" />

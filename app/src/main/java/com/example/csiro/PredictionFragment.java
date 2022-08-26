@@ -1,8 +1,10 @@
 package com.example.csiro;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +25,6 @@ import retrofit2.Response;
 public class PredictionFragment extends Fragment {
 
     private FragmentPredictionBinding binding;
-    private Intent intent_capture;
-    private Intent intent_prediction;
 
     @Override
     public View onCreateView(
@@ -37,6 +37,7 @@ public class PredictionFragment extends Fragment {
 
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -44,14 +45,13 @@ public class PredictionFragment extends Fragment {
         binding.buttonCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try{
-                    intent_capture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent_prediction = new Intent(getActivity(), PredictionActivity.class);
-                    startActivity(intent_capture);
-                    startActivity(intent_prediction);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+
+                Intent intent_capture = new Intent(getActivity(), CaptureActivity.class);
+                startActivity(intent_capture);
+
+                // Here to call Prediction Activity to obtain Predicted Result
+                Intent intent_prediction = new Intent(getActivity(), PredictionActivity.class);
+
                 ResultRequest request = ClientConnection.retrofit.create(ResultRequest.class);
                 new Thread(new Runnable() {
                     @Override
@@ -73,7 +73,8 @@ public class PredictionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try{
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent intent_album = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivity(intent_album);
                 }catch (Exception e){
                     e.printStackTrace();
                 }

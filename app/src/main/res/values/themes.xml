@@ -15,7 +15,7 @@
     </style>
 
     <style name="Theme.Capstone5703.NoActionBar">
-        <item name="windowActionBar">false</item>
+        <item name="windowActionBar">true</item>
         <item name="windowNoTitle">true</item>
     </style>
 
