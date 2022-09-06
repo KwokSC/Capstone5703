@@ -1,8 +1,9 @@
 package com.example.csiro.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Result {
+public class Result implements Serializable {
 
     private String resultId;
 
@@ -10,9 +11,7 @@ public class Result {
 
     private String boxBrand;
 
-    private Boolean isPositive;
-
-    private double reliability;
+    private Float reliability;
 
     public String getResultId() {
         return resultId;
@@ -34,19 +33,11 @@ public class Result {
 
     public void setBoxBrand(String boxBrand) { this.boxBrand = boxBrand; }
 
-    public Boolean getPositive() {
-        return isPositive;
-    }
-
-    public void setPositive(Boolean positive) {
-        isPositive = positive;
-    }
-
     public double getReliability() {
         return reliability;
     }
 
-    public void setReliability(double reliability) {
+    public void setReliability(Float reliability) {
         this.reliability = reliability;
     }
 

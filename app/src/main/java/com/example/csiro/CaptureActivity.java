@@ -1,17 +1,9 @@
 package com.example.csiro;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,7 +11,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -74,12 +65,12 @@ public class CaptureActivity extends AppCompatActivity {
 
         }
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+        Intent capture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivity(capture);
+        capture.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
 
         Intent toPrediction = new Intent(this, PredictionActivity.class);
         toPrediction.setData(imageUri);
         startActivity(toPrediction);
-
     }
 }

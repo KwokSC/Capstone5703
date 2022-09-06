@@ -1,10 +1,8 @@
 package com.example.csiro;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,22 +47,19 @@ public class PredictionFragment extends Fragment {
                 Intent intent_capture = new Intent(getActivity(), CaptureActivity.class);
                 startActivity(intent_capture);
 
-                // Here to call Prediction Activity to obtain Predicted Result
-                Intent intent_prediction = new Intent(getActivity(), PredictionActivity.class);
-
-                ResultRequest request = ClientConnection.retrofit.create(ResultRequest.class);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Response<ResponseObject<Result>> response = request.getResult("").execute();
-                            Result result = response.body().getData();
-                            binding.textViewResult.setText(result.getPositive().toString());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+//                ResultRequest request = ClientConnection.retrofit.create(ResultRequest.class);
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            Response<ResponseObject<Result>> response = request.getResult("").execute();
+//                            Result result = response.body().getData();
+//                            binding.textViewResult.setText(result.getBoxBrand());
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }).start();
             }
         });
 

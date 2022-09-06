@@ -8,11 +8,10 @@
     <string name="menu_settings">Settings</string>
 
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">Prediction Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="prediction_fragment_label">Prediction Fragment</string>
+    <string name="result_fragment_label">Result Fragment</string>
     <string name="camera">Camera</string>
     <string name="album">Album</string>
-    <string name="previous">Previous</string>
+    <string name="confirm">Confirm</string>
 
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

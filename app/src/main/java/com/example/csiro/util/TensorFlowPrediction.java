@@ -6,7 +6,13 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.util.Log;
 
+import com.example.csiro.entity.Result;
+
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class TensorFlowPrediction {
 
@@ -30,9 +36,9 @@ public class TensorFlowPrediction {
         tensorFlowInferenceInterface = new TensorFlowInferenceInterface(assetManager,modelPath);
     }
 
-    public int predict(Bitmap bitmap){
+    public Result predict(Bitmap bitmap){
         // Transform Image to a 299*299 Float Array
-        float[] inputData = bitmapToFloatArray(bitmap,299,299);
+        float[] inputData = bitmapToFloatArray(bitmap,300,300);
 
         // Give the Input Data to TensorFlow Interface with the Predefined Model
         tensorFlowInferenceInterface.feed(INPUT_NAME, inputData, IN_COL, IN_ROW);
@@ -41,14 +47,12 @@ public class TensorFlowPrediction {
         tensorFlowInferenceInterface.run(new String[] {OUTPUT_NAME});
 
         // Define the Output Variable with Specific Shape
-        int[] outputs = new int[OUT_COL*OUT_ROW];
+        float[] outputs = new float[OUT_COL*OUT_ROW];
 
         // Fetch the Prediction Result and Save it in the Output Variable
         tensorFlowInferenceInterface.fetch(OUTPUT_NAME, outputs);
 
-        int result = getResult(outputs, 1);
-
-        return result;
+        return getResult(outputs);
     }
 
     public static float[] bitmapToFloatArray(Bitmap bitmap, int x, int y){
@@ -88,13 +92,36 @@ public class TensorFlowPrediction {
         return result;
     }
 
-    public int getResult(int[] outputs, int max){
-        int index = 0;
-        for(int i = 0;i<outputs.length;i++){
-            if(outputs[i]==max){
+    public Result getResult(float[] outputs){
+
+        int index = -1;
+        float temp = 0;
+        Result result = new Result();
+        String brandName = null;
+
+        for(int i = 0; i<outputs.length; i++){
+            if(outputs[i] > temp){
                 index = i;
+                temp = outputs[i];
             }
         }
-        return  index;
+
+        switch (index){
+            case 0:
+                brandName = "CIGA";
+                break;
+            case 1:
+                brandName = "RightSign";
+                break;
+            case 2:
+                brandName = "Clungene";
+                break;
+        }
+
+        result.setResultId(new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date()));
+        result.setBoxBrand(brandName);
+        result.setUploadDate(new Date());
+        result.setReliability(temp);
+        return result;
     }
 }

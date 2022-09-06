@@ -8,20 +8,20 @@
     <fragment
         android:id="@+id/PredictionFragment"
         android:name="com.example.csiro.PredictionFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/prediction_fragment_label"
         tools:layout="@layout/fragment_prediction">
         <action
-            android:id="@+id/action_PredictionFragment_to_SecondFragment"
+            android:id="@+id/action_PredictionFragment_to_ResultFragment"
             app:destination="@id/SecondFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.example.csiro.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:name="com.example.csiro.ResultFragment"
+        android:label="@string/result_fragment_label"
+        tools:layout="@layout/fragment_result">
         <action
-            android:id="@+id/action_SecondFragment_to_PredictionFragment"
+            android:id="@+id/action_ResultFragment_to_PredictionFragment"
             app:destination="@id/PredictionFragment" />
     </fragment>
 </navigation>

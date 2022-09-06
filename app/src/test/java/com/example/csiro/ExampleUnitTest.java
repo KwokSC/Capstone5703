@@ -5,7 +5,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import com.example.csiro.entity.Result;
-import com.example.csiro.request.ResultRequest;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
