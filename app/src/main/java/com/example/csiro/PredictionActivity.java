@@ -30,8 +30,7 @@ public class PredictionActivity extends AppCompatActivity {
 
     private void predict(){
         tensorFlowPrediction = new TensorFlowPrediction(getAssets(), MODEL_PATH);
-        Uri imageUri = getIntent().getData();
-        Log.e("TFPrediction", getIntent().toString());
+        Uri imageUri = Uri.parse(getIntent().getStringExtra("imgUri"));
         try {
             bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
             result = tensorFlowPrediction.predict(bitmap);

@@ -8,10 +8,14 @@
     <string name="menu_settings">Settings</string>
 
     <!-- Strings used for fragments for navigation -->
+    <string name="welcome_fragment_label">Welcome Fragment</string>
     <string name="prediction_fragment_label">Prediction Fragment</string>
     <string name="result_fragment_label">Result Fragment</string>
+
+
     <string name="camera">Camera</string>
     <string name="album">Album</string>
     <string name="confirm">Confirm</string>
+    <string name="enter">Enter</string>
 
 </resources>

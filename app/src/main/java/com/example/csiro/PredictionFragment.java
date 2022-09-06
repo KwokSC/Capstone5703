@@ -29,10 +29,8 @@ public class PredictionFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
         binding = FragmentPredictionBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     @Override

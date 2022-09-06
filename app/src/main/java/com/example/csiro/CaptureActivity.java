@@ -52,14 +52,14 @@ public class CaptureActivity extends AppCompatActivity {
 
         if(Build.VERSION.SDK_INT>=24)
         {
-            imageUri= FileProvider.getUriForFile(this,"com.example.csiro.fileprovider", outputImage);
+            imageUri = FileProvider.getUriForFile(this,"com.example.csiro.fileprovider", outputImage);
 
             path=imageUri.getPath();
             Log.e(">7:",path);
         }
         else {
-            imageUri= Uri.fromFile(outputImage);
-            path=imageUri.getPath();
+            imageUri = Uri.fromFile(outputImage);
+            path = imageUri.getPath();
 
             Log.e("<7:",imageUri.getPath());
 
@@ -70,7 +70,7 @@ public class CaptureActivity extends AppCompatActivity {
         capture.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
 
         Intent toPrediction = new Intent(this, PredictionActivity.class);
-        toPrediction.setData(imageUri);
+        toPrediction.putExtra("imgUri", imageUri.toString());
         startActivity(toPrediction);
     }
 }
