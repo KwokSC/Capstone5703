@@ -9,7 +9,7 @@
         android:id="@+id/WelcomeFragment"
         android:name="com.example.csiro.WelcomeFragment"
         android:label="@string/welcome_fragment_label"
-        tools:layout="@layout/fragment_prediction">
+        tools:layout="@layout/fragment_welcome">
         <action
             android:id="@+id/action_WelcomeFragment_to_PredictionFragment"
             app:destination="@id/PredictionFragment"

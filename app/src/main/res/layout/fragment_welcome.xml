@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,29 +10,31 @@
     android:paddingTop="16dp">
 
     <TextView
-        android:layout_weight="1"
         android:id="@+id/welcome_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
+        android:layout_weight="2"
         android:gravity="center"
-        android:textSize="12pt"
-        android:text="Welcome!"/>
+        android:text="WELCOME"
+        android:textColor="#00B2E0"
+        android:textSize="12pt" />
 
     <ImageView
-        android:layout_weight="8"
         android:id="@+id/imageView_logo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
         android:layout_margin="@dimen/fab_margin"
-        android:layout_gravity="center"/>
+        android:layout_weight="10"
+        app:srcCompat="@drawable/welcome_logo" />
 
     <Button
         android:id="@+id/enter_button"
-        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
+        android:layout_weight="0.5"
         android:text="@string/enter" />
 
 

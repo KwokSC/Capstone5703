@@ -15,6 +15,8 @@ import java.io.FileNotFoundException;
 
 public class ResultActivity extends AppCompatActivity {
 
+    Bitmap bitmap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,12 +27,12 @@ public class ResultActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         Uri imageUri = Uri.parse(getIntent().getStringExtra("imgUri"));
         try {
-            Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         Result result = (Result) getIntent().getSerializableExtra("Result");
-        Log.e("Return Result",result.toString());
+        ResultFragment resultFragment = ResultFragment.newInstance(result, bitmap);
     }
 
 }

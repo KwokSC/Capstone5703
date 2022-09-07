@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.csiro.databinding.FragmentPredictionBinding;
 import com.example.csiro.entity.ResponseObject;
@@ -45,19 +46,6 @@ public class PredictionFragment extends Fragment {
                 Intent intent_capture = new Intent(getActivity(), CaptureActivity.class);
                 startActivity(intent_capture);
 
-//                ResultRequest request = ClientConnection.retrofit.create(ResultRequest.class);
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            Response<ResponseObject<Result>> response = request.getResult("").execute();
-//                            Result result = response.body().getData();
-//                            binding.textViewResult.setText(result.getBoxBrand());
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }).start();
             }
         });
 

@@ -22,7 +22,7 @@
         <activity
             android:name=".ResultActivity"
             android:exported="false"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleTop"/>
 
         <activity
             android:name=".CaptureActivity"
