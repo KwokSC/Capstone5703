@@ -12,11 +12,7 @@
         tools:layout="@layout/fragment_welcome">
         <action
             android:id="@+id/action_WelcomeFragment_to_PredictionFragment"
-            app:destination="@id/PredictionFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
+            app:destination="@id/PredictionFragment"/>
     </fragment>
 
     <fragment
@@ -25,12 +21,11 @@
         android:label="@string/prediction_fragment_label"
         tools:layout="@layout/fragment_prediction">
         <action
-            android:id="@+id/action_PredictionFragment_to_ResultFragment"
-            app:destination="@id/ResultFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
+            android:id="@+id/action_PredictionFragment_to_CaptureActivity"
+            app:destination="@id/CaptureActivity"/>
+        <action
+            android:id="@+id/action_PredictionFragment_to_AlbumActivity"
+            app:destination="@+id/AlbumActivity"/>
     </fragment>
 
     <fragment
@@ -40,10 +35,23 @@
         tools:layout="@layout/fragment_result">
         <action
             android:id="@+id/action_ResultFragment_to_PredictionFragment"
-            app:destination="@id/PredictionFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
+            app:destination="@id/PredictionFragment"/>
     </fragment>
+
+    <activity
+        android:id="@+id/CaptureActivity"
+        android:name="com.example.csiro.CaptureActivity">
+        <action
+            android:id="@+id/action_CaptureActivity_to_ResultFragment"
+            app:destination="@id/ResultFragment"/>
+    </activity>
+
+    <activity
+        android:id="@+id/AlbumActivity"
+        android:name="com.example.csiro.AlbumActivity">
+        <action
+            android:id="@+id/action_AlbumActivity_to_ResultFragment"
+            app:destination="@id/ResultFragment"/>
+    </activity>
+
 </navigation>

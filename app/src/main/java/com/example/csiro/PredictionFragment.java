@@ -39,28 +39,12 @@ public class PredictionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Button Click Event: Use Camera
-        binding.buttonCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent_capture = new Intent(getActivity(), CaptureActivity.class);
-                startActivity(intent_capture);
-
-            }
-        });
+        binding.buttonCamera.setOnClickListener(CaptureView -> NavHostFragment.findNavController(PredictionFragment.this)
+                .navigate(R.id.action_PredictionFragment_to_CaptureActivity));
 
         // Button Click Event: Upload Photo from Album
-        binding.buttonAlbum.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try{
-                    Intent intent_album = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivity(intent_album);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });
+        binding.buttonAlbum.setOnClickListener(AlbumView -> NavHostFragment.findNavController(PredictionFragment.this)
+                .navigate(R.id.action_PredictionFragment_to_AlbumActivity));
     }
 
     @Override
@@ -68,5 +52,4 @@ public class PredictionFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }
