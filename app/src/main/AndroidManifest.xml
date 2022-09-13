@@ -23,12 +23,10 @@
             android:exported="false" />
         <activity
             android:name=".ResultActivity"
-            android:exported="false"
-            android:launchMode="singleTop" />
+            android:exported="false" />
         <activity
             android:name=".CaptureActivity"
-            android:exported="false"
-            android:launchMode="singleInstance" />
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true" >

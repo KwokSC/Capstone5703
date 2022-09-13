@@ -14,5 +14,7 @@ public class AlbumActivity extends AppCompatActivity {
 
         Intent intent_album = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivity(intent_album);
+
+        finish();
     }
 }

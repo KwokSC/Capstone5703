@@ -45,4 +45,10 @@ public class WelcomeFragment extends Fragment {
         binding.enterButton.setOnClickListener(predictionView -> NavHostFragment.findNavController(WelcomeFragment.this)
                 .navigate(R.id.action_WelcomeFragment_to_PredictionFragment));
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

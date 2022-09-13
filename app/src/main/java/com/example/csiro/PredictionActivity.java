@@ -17,7 +17,7 @@ import java.io.FileNotFoundException;
 public class PredictionActivity extends AppCompatActivity {
 
     TensorFlowPrediction tensorFlowPrediction;
-    private final static String MODEL_PATH = "file:///android_asset/DenseNet169.h5";
+    private final static String MODEL_PATH = "file:///android_asset/InceptionV3.h5";
     Bitmap bitmap;
     Result result;
 
@@ -30,7 +30,8 @@ public class PredictionActivity extends AppCompatActivity {
 
     private void predict(){
         tensorFlowPrediction = new TensorFlowPrediction(getAssets(), MODEL_PATH);
-        Uri imageUri = Uri.parse(getIntent().getStringExtra("imgUri"));
+        Uri imageUri = getIntent().getParcelableExtra("imageUri");
+        Log.e("PATH", imageUri.getPath());
         try {
             bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
             result = tensorFlowPrediction.predict(bitmap);

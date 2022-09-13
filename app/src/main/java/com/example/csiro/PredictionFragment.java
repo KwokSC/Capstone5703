@@ -39,12 +39,22 @@ public class PredictionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Button Click Event: Use Camera
-        binding.buttonCamera.setOnClickListener(CaptureView -> NavHostFragment.findNavController(PredictionFragment.this)
-                .navigate(R.id.action_PredictionFragment_to_CaptureActivity));
+        binding.buttonCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CaptureActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Button Click Event: Upload Photo from Album
-        binding.buttonAlbum.setOnClickListener(AlbumView -> NavHostFragment.findNavController(PredictionFragment.this)
-                .navigate(R.id.action_PredictionFragment_to_AlbumActivity));
+        binding.buttonAlbum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AlbumActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -26,16 +26,21 @@ public class CaptureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         OpenCamera();
-        finish();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        Intent toPrediction = new Intent(this, PredictionActivity.class);
+        toPrediction.putExtra("imageUri",imageUri);
+        startActivity(toPrediction);
     }
 
     private void OpenCamera(){
         String imageName = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
-
         File outputImage = new File(getExternalCacheDir(), imageName+".jpg");
-
         Objects.requireNonNull(outputImage.getParentFile()).mkdirs();
-
         try
         {
             if(outputImage.exists())
@@ -43,7 +48,7 @@ public class CaptureActivity extends AppCompatActivity {
                 outputImage.delete();
             }
             boolean a = outputImage.createNewFile();
-            Log.e("createNewFile", String.valueOf(a));
+            Log.i("New File Created", String.valueOf(a));
         }
         catch (IOException e)
         {
@@ -53,24 +58,17 @@ public class CaptureActivity extends AppCompatActivity {
         if(Build.VERSION.SDK_INT>=24)
         {
             imageUri = FileProvider.getUriForFile(this,"com.example.csiro.fileprovider", outputImage);
-
             path=imageUri.getPath();
-            Log.e(">7:",path);
+            Log.i("Android Version > 7:",path);
         }
         else {
             imageUri = Uri.fromFile(outputImage);
             path = imageUri.getPath();
-
-            Log.e("<7:",imageUri.getPath());
-
+            Log.i("Android Version < 7:",imageUri.getPath());
         }
 
         Intent capture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivity(capture);
         capture.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-
-        Intent toPrediction = new Intent(this, PredictionActivity.class);
-        toPrediction.putExtra("imgUri", imageUri.toString());
-        startActivity(toPrediction);
+        startActivity(capture);
     }
 }

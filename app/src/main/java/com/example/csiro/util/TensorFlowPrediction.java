@@ -17,7 +17,7 @@ import java.util.Locale;
 public class TensorFlowPrediction {
 
     // Input Shape
-    private static final int IN_COL = 1;
+    private static final int IN_COL = 3;
     private static final int IN_ROW = 300*300;
 
     // Output Shape
@@ -25,7 +25,7 @@ public class TensorFlowPrediction {
     private static final int OUT_ROW = 1;
 
     // Input Name of the Model
-    private static final String INPUT_NAME = "input";
+    private static final String INPUT_NAME = "input_layer";
     // Output Name of the Model
     private static final String OUTPUT_NAME = "output";
 
@@ -69,25 +69,22 @@ public class TensorFlowPrediction {
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight);
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-        Log.i("TAG","bitmap width:"+bitmap.getWidth()+",height:"+bitmap.getHeight());
-        Log.i("TAG","bitmap.getConfig():"+bitmap.getConfig());
+        Log.i("TAG","Bitmap width: "+bitmap.getWidth()+",height: "+bitmap.getHeight());
+        Log.i("TAG","Bitmap config: "+bitmap.getConfig());
 
         // Obtain the Transformed Bitmap for Iteration
         height = bitmap.getHeight();
         width = bitmap.getWidth();
 
-        float[] result = new float[height*width];
-        int k = 0;
-        for(int j = 0;j < height;j++){
-            for (int i = 0;i < width;i++){
-                int pixel = bitmap.getPixel(i,j);
-                int r = Color.red(pixel);
-                int g = Color.green(pixel);
-                int b = Color.blue(pixel);
-                int a = Color.alpha(pixel);
-                assert(r==g && g==b);
-                result[k++] = r / 255.0f;
-            }
+        float[] result = new float[height*width*3];
+        int[] intValues = new int[width * height];
+        bitmap.getPixels(intValues, 0, width, 0, 0, width,
+                height);
+        for (int i = 0; i < intValues.length; ++i) {
+            final int val = intValues[i];
+            result[i * 3] = (float) ((val >> 16) & 0xFF)/255.0f;
+            result[i * 3 + 1] = (float) ((val >> 8) & 0xFF)/255.0f;
+            result[i * 3 + 2] = (float) (val & 0xFF)/255.0f;
         }
         return result;
     }
