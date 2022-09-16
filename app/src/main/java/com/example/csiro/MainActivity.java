@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+        // Build Connection with Cloud Service.
         ClientConnection.connectionBuild("http://10.16.57.70:8080/");
     }
 

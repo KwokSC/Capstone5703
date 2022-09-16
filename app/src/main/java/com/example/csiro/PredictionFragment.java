@@ -2,24 +2,14 @@ package com.example.csiro;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.csiro.databinding.FragmentPredictionBinding;
-import com.example.csiro.entity.ResponseObject;
-import com.example.csiro.entity.Result;
-import com.example.csiro.request.ResultRequest;
-import com.example.csiro.util.ClientConnection;
-
-import java.io.IOException;
-
-import retrofit2.Response;
 
 public class PredictionFragment extends Fragment {
 

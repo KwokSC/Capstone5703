@@ -33,7 +33,7 @@ public class CaptureActivity extends AppCompatActivity {
         super.onRestart();
 
         Intent toPrediction = new Intent(this, PredictionActivity.class);
-        toPrediction.putExtra("imageUri",imageUri);
+        toPrediction.putExtra("ImageUri",imageUri);
         startActivity(toPrediction);
     }
 

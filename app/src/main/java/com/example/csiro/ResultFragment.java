@@ -1,6 +1,5 @@
 package com.example.csiro;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,17 +16,7 @@ import com.example.csiro.entity.Result;
 public class ResultFragment extends Fragment {
 
     private FragmentResultBinding binding;
-
-    public static ResultFragment newInstance(Result result, Bitmap bitmap){
-
-        ResultFragment resultFragment = new ResultFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("Result", result);
-        bundle.putParcelable("Bitmap", bitmap);
-        resultFragment.setArguments(bundle);
-        return resultFragment;
-
-    }
+//    private Display display;
 
     @Override
     public View onCreateView(
@@ -54,11 +43,23 @@ public class ResultFragment extends Fragment {
         }
     }
 
+//    @Override
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//        try {
+//            display = (Display) context;
+//        }catch (ClassCastException e){
+//            throw new ClassCastException("Class cast failed, Activity should implement Display interface");
+//        }
+//        display.resultDisplay(this.getArguments().getParcelable("Result"));
+//    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
+
+//    public interface Display{ void resultDisplay(Result result); }
 
 }

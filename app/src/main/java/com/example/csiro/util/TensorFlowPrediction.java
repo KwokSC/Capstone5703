@@ -2,30 +2,32 @@ package com.example.csiro.util;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.util.Log;
 
 import com.example.csiro.entity.Result;
 
+import org.tensorflow.Operation;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 
+@Deprecated
 public class TensorFlowPrediction {
 
     // Input Shape
-    private static final int IN_COL = 3;
-    private static final int IN_ROW = 300*300;
+    private static final int IN_COL = 1;
+    private static final int IN_ROW = 300*300*3;
 
     // Output Shape
     private static final int OUT_COL = 3;
     private static final int OUT_ROW = 1;
 
     // Input Name of the Model
-    private static final String INPUT_NAME = "input_layer";
+    private static final String INPUT_NAME = "Input";
     // Output Name of the Model
     private static final String OUTPUT_NAME = "output";
 
@@ -39,6 +41,12 @@ public class TensorFlowPrediction {
     public Result predict(Bitmap bitmap){
         // Transform Image to a 299*299 Float Array
         float[] inputData = bitmapToFloatArray(bitmap,300,300);
+
+        Iterator<Operation> operationIterator = tensorFlowInferenceInterface.graph().operations();
+        while (operationIterator.hasNext()){
+            Operation operation = operationIterator.next();
+            Log.i("Layer", operation.name());
+        }
 
         // Give the Input Data to TensorFlow Interface with the Predefined Model
         tensorFlowInferenceInterface.feed(INPUT_NAME, inputData, IN_COL, IN_ROW);
@@ -76,7 +84,7 @@ public class TensorFlowPrediction {
         height = bitmap.getHeight();
         width = bitmap.getWidth();
 
-        float[] result = new float[height*width*3];
+        float[] result = new float[height * width * 3];
         int[] intValues = new int[width * height];
         bitmap.getPixels(intValues, 0, width, 0, 0, width,
                 height);
