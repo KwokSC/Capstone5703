@@ -46,11 +46,8 @@ public class ResultActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // TODO: Pass this Bundle to Result Fragment.
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("Result", result);
-        bundle.putParcelable("ImageUri", imageUri);
-
+        ResultFragment.result = this.result;
+        ResultFragment.image = this.bitmap;
     }
 
 

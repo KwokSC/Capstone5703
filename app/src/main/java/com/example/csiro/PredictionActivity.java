@@ -92,6 +92,7 @@ public class PredictionActivity extends AppCompatActivity {
         result.setBoxBrand(brand);
         result.setUploadDate(new Date());
         result.setReliability(max);
+        Log.i("Result", result.toString());
 
         // Pass Result Object and Uploaded Image to Result Activity.
         Intent toResult = new Intent(this, ResultActivity.class);

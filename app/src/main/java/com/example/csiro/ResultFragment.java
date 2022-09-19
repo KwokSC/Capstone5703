@@ -16,6 +16,9 @@ import com.example.csiro.entity.Result;
 public class ResultFragment extends Fragment {
 
     private FragmentResultBinding binding;
+
+    public static Bitmap image;
+    public static Result result;
 //    private Display display;
 
     @Override
@@ -23,10 +26,8 @@ public class ResultFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
         binding = FragmentResultBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
