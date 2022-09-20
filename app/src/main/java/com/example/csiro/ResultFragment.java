@@ -1,6 +1,7 @@
 package com.example.csiro;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +14,15 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.csiro.databinding.FragmentResultBinding;
 import com.example.csiro.entity.Result;
 
+import java.io.FileNotFoundException;
+
 public class ResultFragment extends Fragment {
 
     private FragmentResultBinding binding;
 
-    public static Bitmap image;
+    public static Bitmap bitmap;
     public static Result result;
+
 //    private Display display;
 
     @Override
@@ -34,11 +38,16 @@ public class ResultFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.confirmButton.setOnClickListener(predictionView -> NavHostFragment.findNavController(ResultFragment.this)
-                .navigate(R.id.action_ResultFragment_to_PredictionFragment));
+                .navigate(R.id.action_ResultFragment_to_MainActivity));
 
         if (getArguments() != null){
-            binding.imageViewPhoto.setImageBitmap(getArguments().getParcelable("Bitmap"));
-            Result result = (Result) getArguments().getSerializable("Result");
+            result = (Result) getArguments().getSerializable("Result");
+            try {
+                bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(getArguments().getParcelable("ImageUri")));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            binding.imageViewPhoto.setImageBitmap(bitmap);
             binding.textViewDescription.setText(result.getDescription());
             binding.textViewPrediction.setText(result.getBoxBrand());
         }

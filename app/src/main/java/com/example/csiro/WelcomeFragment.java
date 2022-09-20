@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.csiro.databinding.FragmentPredictionBinding;
 import com.example.csiro.databinding.FragmentWelcomeBinding;
 
 

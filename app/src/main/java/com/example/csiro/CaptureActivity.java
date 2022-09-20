@@ -20,7 +20,6 @@ import java.util.Objects;
 public class CaptureActivity extends AppCompatActivity {
 
     private Uri imageUri;
-    public String path = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +57,10 @@ public class CaptureActivity extends AppCompatActivity {
         if(Build.VERSION.SDK_INT>=24)
         {
             imageUri = FileProvider.getUriForFile(this,"com.example.csiro.fileprovider", outputImage);
-            path=imageUri.getPath();
-            Log.i("Android Version > 7:",path);
+            Log.i("Android Version > 7:",imageUri.getPath());
         }
         else {
             imageUri = Uri.fromFile(outputImage);
-            path = imageUri.getPath();
             Log.i("Android Version < 7:",imageUri.getPath());
         }
 

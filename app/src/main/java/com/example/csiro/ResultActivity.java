@@ -1,53 +1,44 @@
 package com.example.csiro;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.example.csiro.entity.Result;
-
-import java.io.FileNotFoundException;
+import com.example.csiro.databinding.ActivityResultBinding;
 
 public class ResultActivity extends AppCompatActivity {
 
 //    private ImageView imageView;
 //    private TextView description;
 //    private TextView brandName;
-
-    private Result result;
-    private Bitmap bitmap;
-    private ResultFragment resultFragment;
+    private AppBarConfiguration appBarConfiguration;
+    private ActivityResultBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        binding = ActivityResultBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        setSupportActionBar(binding.toolbar);
+
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_result);
+        navController.setGraph(R.navigation.nav_graph_result, getIntent().getExtras());
+
+        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 //        imageView = findViewById(R.id.imageView_photo);
 //        description = findViewById(R.id.textView_description);
 //        brandName = findViewById(R.id.textView_prediction);
 
-        // Obtain Result and Image from Prediction Activity.
-        result = (Result) getIntent().getExtras().getSerializable("Result");
-        Uri imageUri = getIntent().getExtras().getParcelable("ImageUri");
-
-        try {
-            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        ResultFragment.result = this.result;
-        ResultFragment.image = this.bitmap;
     }
 
 
@@ -57,4 +48,44 @@ public class ResultActivity extends AppCompatActivity {
 //        description.setText(result.getDescription() + "/n" + result.getReliability());
 //        brandName.setText(result.getBoxBrand());
 //    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        switch (id){
+            case R.id.menu_user:
+                Log.i("MENU", "User selected");
+                break;
+
+            case R.id.menu_history:
+                Log.i("MENU","History selected");
+
+            case R.id.menu_feedback:
+                Log.i("MENU", "Feedback selected");
+
+            case R.id.menu_settings:
+                Log.i("MENU", "Setting selected");
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        return NavigationUI.navigateUp(navController, appBarConfiguration)
+                || super.onSupportNavigateUp();
+    }
 }
