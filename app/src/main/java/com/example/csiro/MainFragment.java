@@ -32,8 +32,10 @@ public class MainFragment extends Fragment {
 
     private FragmentMainBinding binding;
 
+    // Variable for Local Image Uri.
     private Uri imageUri;
 
+    // Result Receiver Object.
     ActivityResultLauncher<Intent> albumActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -58,6 +60,9 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        // If User Capture a Photo or Upload One from Album,
+        // Pass It to Prediction Fragment.
         if (imageUri != null){
             Log.e("Main", "ImageUri is not null.");
             Intent prediction = new Intent(getActivity(), PredictionActivity.class);
@@ -76,11 +81,17 @@ public class MainFragment extends Fragment {
         binding.buttonCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(), CaptureActivity.class);
-//                startActivity(intent);
+
+                // Generate File Name with Current Time.
                 String imageName = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
+
+                // Generate File Object.
                 File outputImage = new File(getActivity().getExternalCacheDir(), imageName+".jpg");
+
+                // Write File Object into Cache.
                 Objects.requireNonNull(outputImage.getParentFile()).mkdirs();
+
+                // Avoid File with the Same Name.
                 try
                 {
                     if(outputImage.exists())
@@ -95,6 +106,7 @@ public class MainFragment extends Fragment {
                     e.printStackTrace();
                 }
 
+                // Targeting Android Platforms with Different Version.
                 if(Build.VERSION.SDK_INT>=24)
                 {
                     imageUri = FileProvider.getUriForFile(getContext(),"com.example.csiro.fileprovider", outputImage);
@@ -105,6 +117,7 @@ public class MainFragment extends Fragment {
                     Log.i("Android Version < 7:",imageUri.getPath());
                 }
 
+                // Start Capture Activity.
                 Intent capture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 capture.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
                 startActivity(capture);
@@ -115,8 +128,8 @@ public class MainFragment extends Fragment {
         binding.buttonAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(), AlbumActivity.class);
-//                startActivity(intent);
+
+                // Start Selection Activity and Use Result Launcher to Receive Image Uri.
                 Intent album = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 album.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
                 albumActivityResultLauncher.launch(album);

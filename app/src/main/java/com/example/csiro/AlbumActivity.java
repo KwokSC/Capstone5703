@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 
+@Deprecated
 public class AlbumActivity extends AppCompatActivity {
 
     @Override

@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+@Deprecated
 public class CaptureActivity extends AppCompatActivity {
 
     private Uri imageUri;

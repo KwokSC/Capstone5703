@@ -29,35 +29,28 @@ import java.util.Locale;
 
 public class PredictionActivity extends AppCompatActivity {
 
-//    TensorFlowPrediction tensorFlowPrediction;
-//    private final static String MODEL_PATH = "file:///android_asset/InceptionV3.pb";
+    // Store Bitmap Transformed from Local Image Uri.
     private Bitmap bitmap;
+
+    // Instantiate a Result Object for Storing Result.
     private Result result = new Result();
+
+    // Probability Output for TensorFlow Model.
     private List<Category> probability;
+
+    // Local Image Uri for Prediction.
     private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Prediction Calculation.
         predict();
+
+        // Avoid Stack Reuse this Activity.
         finish();
     }
-
-//    private void predict(){
-//        tensorFlowPrediction = new TensorFlowPrediction(getAssets(), MODEL_PATH);
-//        Uri imageUri = getIntent().getParcelableExtra("imageUri");
-//        Log.i("PATH", imageUri.getPath());
-//        try {
-//            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-//            result = tensorFlowPrediction.predict(bitmap);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//
-//        Intent intent = new Intent(this, ResultActivity.class);
-//        intent.putExtra("Result", result);
-//        startActivity(intent);
-//    }
 
     private void predict(){
         try {

@@ -18,17 +18,6 @@ public class WelcomeFragment extends Fragment {
 
     private FragmentWelcomeBinding binding;
 
-    public WelcomeFragment() {
-        // Required empty public constructor
-    }
-
-    public static WelcomeFragment newInstance() {
-        WelcomeFragment fragment = new WelcomeFragment();
-        Bundle bundle = new Bundle();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,

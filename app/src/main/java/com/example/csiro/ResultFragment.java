@@ -20,10 +20,11 @@ public class ResultFragment extends Fragment {
 
     private FragmentResultBinding binding;
 
-    public static Bitmap bitmap;
-    public static Result result;
+    // Bitmap Object for Displaying in Result UI.
+    private Bitmap bitmap;
 
-//    private Display display;
+    // Result Object Received from Prediction Calculation.
+    private Result result;
 
     @Override
     public View onCreateView(
@@ -40,6 +41,8 @@ public class ResultFragment extends Fragment {
         binding.confirmButton.setOnClickListener(predictionView -> NavHostFragment.findNavController(ResultFragment.this)
                 .navigate(R.id.action_ResultFragment_to_MainActivity));
 
+        // If the Fragment Receives Bundle Containing Result and Input Image,
+        // Then Display them.
         if (getArguments() != null){
             result = (Result) getArguments().getSerializable("Result");
             try {
@@ -53,23 +56,11 @@ public class ResultFragment extends Fragment {
         }
     }
 
-//    @Override
-//    public void onAttach(@NonNull Context context) {
-//        super.onAttach(context);
-//        try {
-//            display = (Display) context;
-//        }catch (ClassCastException e){
-//            throw new ClassCastException("Class cast failed, Activity should implement Display interface");
-//        }
-//        display.resultDisplay(this.getArguments().getParcelable("Result"));
-//    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
-
-//    public interface Display{ void resultDisplay(Result result); }
 
 }

@@ -1,5 +1,6 @@
 package com.example.csiro;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,9 +16,6 @@ import com.example.csiro.databinding.ActivityResultBinding;
 
 public class ResultActivity extends AppCompatActivity {
 
-//    private ImageView imageView;
-//    private TextView description;
-//    private TextView brandName;
     private AppBarConfiguration appBarConfiguration;
     private ActivityResultBinding binding;
 
@@ -31,23 +29,14 @@ public class ResultActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_result);
+
+        // Set Current Graph and Pass Result Bundle to Result Fragment.
         navController.setGraph(R.navigation.nav_graph_result, getIntent().getExtras());
 
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-//        imageView = findViewById(R.id.imageView_photo);
-//        description = findViewById(R.id.textView_description);
-//        brandName = findViewById(R.id.textView_prediction);
 
     }
-
-
-//    @Override
-//    public void resultDisplay(Result result) {
-//        imageView.setImageBitmap(result.getBitmap());
-//        description.setText(result.getDescription() + "/n" + result.getReliability());
-//        brandName.setText(result.getBoxBrand());
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,6 +45,7 @@ public class ResultActivity extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
