@@ -1,6 +1,5 @@
 package com.example.csiro;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -21,7 +20,6 @@ import com.example.csiro.ml.Inceptionv3;
 import org.tensorflow.lite.support.image.TensorImage;
 import org.tensorflow.lite.support.label.Category;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,11 +34,11 @@ public class ResultFragment extends Fragment {
     private Bitmap bitmap;
 
     // Result Object Received from Prediction Calculation.
-    private Result result = new Result();
+    private final Result result = new Result();
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
+            @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
         binding = FragmentResultBinding.inflate(inflater, container, false);
@@ -53,12 +51,6 @@ public class ResultFragment extends Fragment {
         // If the Fragment Receives Bundle Containing Result and Input Image,
         // Then Display them.
         if (getArguments() != null){
-//            result = (Result) getArguments().getSerializable("Result");
-//            try {
-//                bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(getArguments().getParcelable("ImageUri")));
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
             predict(getArguments().getParcelable("ImageUri"));
             binding.imageViewPhoto.setImageBitmap(bitmap);
             binding.textViewDescription.setText(result.getDescription());
