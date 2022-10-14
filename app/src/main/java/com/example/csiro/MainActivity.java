@@ -1,22 +1,34 @@
 package com.example.csiro;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.provider.MediaStore;
 import android.util.Log;
 
+import androidx.core.content.FileProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.csiro.databinding.ActivityMainBinding;
-
+import com.example.csiro.entity.Result;
 import com.example.csiro.util.ClientConnection;
+import com.example.csiro.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+        // Build Connection with Cloud Service.
         ClientConnection.connectionBuild("http://10.16.57.70:8080/");
     }
 
@@ -79,4 +92,5 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
 }

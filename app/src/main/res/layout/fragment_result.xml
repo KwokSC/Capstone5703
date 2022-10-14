@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp">
+
+    <ImageView
+        android:layout_weight="6"
+        android:id="@+id/imageView_photo"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:layout_weight="2"
+        android:id="@+id/textView_prediction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:gravity="center"
+        android:textSize="12pt"/>
+
+    <TextView
+        android:layout_weight="6"
+        android:id="@+id/textView_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:gravity="center"
+        android:textSize="12pt"/>
+
+    <Button
+        android:layout_weight="1"
+        android:id="@+id/confirm_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:text="@string/confirm" />
+
+</LinearLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/WelcomeFragment">
+
+    <fragment
+        android:id="@+id/WelcomeFragment"
+        android:name="com.example.csiro.WelcomeFragment"
+        android:label="@string/welcome_fragment_label"
+        tools:layout="@layout/fragment_welcome">
+        <action
+            android:id="@+id/action_WelcomeFragment_to_PredictionFragment"
+            app:destination="@id/MainFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/MainFragment"
+        android:name="com.example.csiro.MainFragment"
+        android:label="@string/main_fragment_label"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_PredictionFragment_to_ResultActivity"
+            app:destination="@id/ResultActivity"/>
+    </fragment>
+
+    <activity
+        android:id="@+id/ResultActivity"
+        android:name="com.example.csiro.ResultActivity"
+        />
+
+</navigation>
