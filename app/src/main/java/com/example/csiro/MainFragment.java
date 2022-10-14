@@ -2,6 +2,8 @@ package com.example.csiro;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,13 +20,21 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.csiro.databinding.FragmentMainBinding;
+import com.example.csiro.entity.Result;
+import com.example.csiro.ml.Inceptionv3;
+
+import org.tensorflow.lite.support.image.TensorImage;
+import org.tensorflow.lite.support.label.Category;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -64,10 +74,13 @@ public class MainFragment extends Fragment {
         // If User Capture a Photo or Upload One from Album,
         // Pass It to Prediction Fragment.
         if (imageUri != null){
-            Log.e("Main", "ImageUri is not null.");
-            Intent prediction = new Intent(getActivity(), PredictionActivity.class);
-            prediction.putExtra("ImageUri", imageUri);
-            startActivity(prediction);
+//            Log.e("Main", "ImageUri is not null.");
+//            Intent prediction = new Intent(getActivity(), PredictionActivity.class);
+//            prediction.putExtra("ImageUri", imageUri);
+//            startActivity(prediction);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("ImageUri", imageUri);
+            NavHostFragment.findNavController(this).navigate(R.id.action_MainFragment_to_ResultFragment, bundle);
         }
     }
 

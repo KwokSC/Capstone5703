@@ -14,6 +14,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.csiro.databinding.ActivityResultBinding;
 
+@Deprecated
 public class ResultActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;

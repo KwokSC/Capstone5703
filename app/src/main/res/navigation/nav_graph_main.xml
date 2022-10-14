@@ -23,6 +23,19 @@
         <action
             android:id="@+id/action_PredictionFragment_to_ResultActivity"
             app:destination="@id/ResultActivity"/>
+        <action
+            android:id="@+id/action_MainFragment_to_ResultFragment"
+            app:destination="@id/ResultFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/ResultFragment"
+        android:name="com.example.csiro.ResultFragment"
+        android:label="@string/result_fragment_label"
+        tools:layout="@layout/fragment_result">
+        <action
+            android:id="@+id/action_ResultFragment_to_MainFragment"
+            app:destination="@id/MainFragment"/>
     </fragment>
 
     <activity

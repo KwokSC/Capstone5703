@@ -1,10 +1,6 @@
 package com.example.csiro;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,18 +11,17 @@ import android.util.Log;
 
 import com.example.csiro.entity.Result;
 import com.example.csiro.ml.Inceptionv3;
-import com.example.csiro.util.TensorFlowPrediction;
 
 import org.tensorflow.lite.support.image.TensorImage;
 import org.tensorflow.lite.support.label.Category;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+@Deprecated
 public class PredictionActivity extends AppCompatActivity {
 
     // Store Bitmap Transformed from Local Image Uri.
@@ -56,6 +51,9 @@ public class PredictionActivity extends AppCompatActivity {
         try {
             // Instantiate A InceptionV3 Model.
             Inceptionv3 model = Inceptionv3.newInstance(this);
+
+            // Obtain Model Version.
+
 
             // Obtain Image from Capture or Album Activity and Transform it into a Bitmap.
             imageUri = getIntent().getParcelableExtra("ImageUri");
