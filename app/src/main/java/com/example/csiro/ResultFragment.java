@@ -30,12 +30,6 @@ public class ResultFragment extends Fragment {
 
     private FragmentResultBinding binding;
 
-    // Bitmap Object for Displaying in Result UI.
-    private Bitmap bitmap;
-
-    // Result Object Received from Prediction Calculation.
-    private final Result result = new Result();
-
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
@@ -51,8 +45,8 @@ public class ResultFragment extends Fragment {
         // If the Fragment Receives Bundle Containing Result and Input Image,
         // Then Display them.
         if (getArguments() != null){
-            predict(getArguments().getParcelable("ImageUri"));
-            binding.imageViewPhoto.setImageBitmap(bitmap);
+            Result result = predict(getArguments().getParcelable("ImageUri"));
+            binding.imageViewPhoto.setImageBitmap(result.getBitmap());
             binding.textViewDescription.setText(result.getDescription());
             binding.textViewPrediction.setText(result.getBoxBrand());
         }
@@ -67,8 +61,15 @@ public class ResultFragment extends Fragment {
         binding = null;
     }
 
-    private void predict(Uri imageUri){
+    private Result predict(Uri imageUri){
 
+        // Bitmap Object for Displaying in Result UI.
+        Bitmap bitmap = null;
+
+        // Result Object Received from Prediction Calculation.
+        Result result = new Result();
+
+        // Store model outputs.
         List<Category> probability = null;
 
         try {
@@ -102,10 +103,13 @@ public class ResultFragment extends Fragment {
         }
 
         // Set Values for Empty Result Object.
+        result.setBitmap(bitmap);
         result.setResultId(new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date()));
         result.setBoxBrand(brand);
         result.setUploadDate(new Date());
         result.setReliability(max);
         Log.i("Result", result.toString());
+
+        return result;
     }
 }
