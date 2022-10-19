@@ -61,7 +61,7 @@ public class ResultFragment extends Fragment {
         binding = null;
     }
 
-    private Result predict(Uri imageUri){
+    private Result predict(Uri uri){
 
         // Bitmap Object for Displaying in Result UI.
         Bitmap bitmap = null;
@@ -76,7 +76,7 @@ public class ResultFragment extends Fragment {
             // Instantiate A InceptionV3 Model.
             Inceptionv3 model = Inceptionv3.newInstance(getContext());
 
-            bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(imageUri));
+            bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(uri));
 
             // Creates Inputs for Reference.
             TensorImage image = TensorImage.fromBitmap(bitmap);
@@ -111,5 +111,10 @@ public class ResultFragment extends Fragment {
         Log.i("Result", result.toString());
 
         return result;
+    }
+
+    private String textRecognition(Uri uri){
+
+        return "";
     }
 }
