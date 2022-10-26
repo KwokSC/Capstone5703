@@ -3,26 +3,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/PredictionFragment">
+    app:startDestination="@id/WelcomeFragment">
 
     <fragment
-        android:id="@+id/PredictionFragment"
-        android:name="com.example.csiro.PredictionFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_prediction">
-
+        android:id="@+id/WelcomeFragment"
+        android:name="com.csiro.capstone.WelcomeFragment"
+        android:label="@string/welcome_fragment_label"
+        tools:layout="@layout/fragment_welcome">
         <action
-            android:id="@+id/action_PredictionFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_WelcomeFragment_to_MainFragment"
+            app:destination="@id/MainFragment"/>
     </fragment>
+
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.csiro.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
+        android:id="@+id/MainFragment"
+        android:name="com.csiro.capstone.MainFragment"
+        android:label="@string/main_fragment_label"
+        tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_SecondFragment_to_PredictionFragment"
-            app:destination="@id/PredictionFragment" />
+            android:id="@+id/action_MainFragment_to_ResultFragment"
+            app:destination="@id/ResultFragment"/>
+        <action
+            android:id="@+id/action_MainFragment_to_EdgeFragment"
+            app:destination="@id/EdgeFragment"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/EdgeFragment"
+        android:name="com.csiro.capstone.EdgeFragment"
+        android:label="@string/edge_fragment_label"
+        tools:layout="@layout/fragment_edge">
+        <action
+            android:id="@+id/action_EdgeFragment_to_ResultFragment"
+            app:destination="@id/ResultFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/ResultFragment"
+        android:name="com.csiro.capstone.ResultFragment"
+        android:label="@string/result_fragment_label"
+        tools:layout="@layout/fragment_result">
+        <action
+            android:id="@+id/action_ResultFragment_to_MainFragment"
+            app:destination="@id/MainFragment"/>
+    </fragment>
+
 </navigation>
