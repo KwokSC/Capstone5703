@@ -35,7 +35,6 @@
         android:textSize="12pt"/>
 
     <Button
-        android:layout_weight="1"
         android:id="@+id/confirm_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"

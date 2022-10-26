@@ -30,7 +30,7 @@ public class WelcomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Button Click Event: Enter Prediction Layout.
-        binding.enterButton.setOnClickListener(predictionView -> NavHostFragment.findNavController(WelcomeFragment.this)
+        binding.enterButton.setOnClickListener(mainView -> NavHostFragment.findNavController(WelcomeFragment.this)
                 .navigate(R.id.action_WelcomeFragment_to_MainFragment));
     }
 

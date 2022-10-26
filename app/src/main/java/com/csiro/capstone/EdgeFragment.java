@@ -1,15 +1,27 @@
 package com.csiro.capstone;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.csiro.capstone.databinding.FragmentEdgeBinding;
 
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
@@ -26,12 +38,32 @@ import java.util.List;
 
 public class EdgeFragment extends Fragment {
 
+    private FragmentEdgeBinding binding;
+
+    private Uri imageUri;
+
+    // Result Receiver Object.
+    ActivityResultLauncher<Intent> cropActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+
+                    }
+                }
+            });
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            Uri uri = getArguments().getParcelable("ImageUri");
-            findMaxRect(detectEdges(uri));
+            imageUri = getArguments().getParcelable("ImageUri");
+            Rect rect = findMaxRect(detectEdges(imageUri));
+
+            Intent crop = new Intent("com.android.camera.action.CROP");
+            crop.setDataAndType(imageUri, "image/*");
+            cropActivityResultLauncher.launch(crop);
         }
     }
 
@@ -40,6 +72,14 @@ public class EdgeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edge, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        binding.confirmButton.setOnClickListener(resultView -> NavHostFragment.findNavController(EdgeFragment.this)
+                .navigate(R.id.action_WelcomeFragment_to_MainFragment));
     }
 
     private Mat detectEdges(Uri uri) {
