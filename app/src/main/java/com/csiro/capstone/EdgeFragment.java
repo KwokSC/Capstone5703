@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +48,7 @@ public class EdgeFragment extends Fragment {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-
+                        imageUri = result.getData().getData();
                     }
                 }
             });
@@ -82,6 +81,20 @@ public class EdgeFragment extends Fragment {
                 .navigate(R.id.action_WelcomeFragment_to_MainFragment));
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (imageUri != null){
+            try {
+                Bitmap bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(imageUri));
+                binding.imageViewCrop.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private Mat detectEdges(Uri uri) {
         Mat rgba = new Mat();
 
@@ -104,15 +117,22 @@ public class EdgeFragment extends Fragment {
 
     public Rect findMaxRect(Mat cannyMat) {
 
+        // Store the largest contour.
         Mat tmp = cannyMat.clone();
 
+        // Store all contours inside the image.
         List<MatOfPoint> contours = new ArrayList();
 
+        // Contour hierarchy information.
         Mat hierarchy = new Mat();
-        // Find Contours inside the Image
+
+        // Find contours inside the image.
         Imgproc.findContours(cannyMat, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
+        // Index of the largest contour in the contour list.
         int index = 0;
+
+        // The contour with the largest perimeter in the contour list.
         double perimeter = 0;
 
         // Find the maximum Contour
