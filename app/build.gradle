@@ -55,4 +55,6 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-lite-support:0.1.0'
     implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0'
 
+    // OpenCV
+    implementation 'com.quickbirdstudios:opencv:3.4.15'
 }

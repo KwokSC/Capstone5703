@@ -23,6 +23,19 @@
         <action
             android:id="@+id/action_MainFragment_to_ResultFragment"
             app:destination="@id/ResultFragment"/>
+        <action
+            android:id="@+id/action_MainFragment_to_EdgeFragment"
+            app:destination="@id/EdgeFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/EdgeFragment"
+        android:name="com.csiro.capstone.EdgeFragment"
+        android:label="@string/edge_fragment_label"
+        tools:layout="@layout/fragment_edge">
+        <action
+            android:id="@+id/action_EdgeFragment_to_ResultFragment"
+            app:destination="@id/ResultFragment"/>
     </fragment>
 
     <fragment

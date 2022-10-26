@@ -32,14 +32,14 @@
             android:id="@+id/button_camera"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_margin="@dimen/fab_margin"
             android:text="@string/camera" />
         <Button
             android:id="@+id/button_album"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_margin="@dimen/fab_margin"
             android:text="@string/album" />
     </LinearLayout>

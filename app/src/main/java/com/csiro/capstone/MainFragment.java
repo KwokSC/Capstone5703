@@ -65,13 +65,10 @@ public class MainFragment extends Fragment {
         // If User Capture a Photo or Upload One from Album,
         // Pass It to Prediction Fragment.
         if (imageUri != null){
-//            Log.e("Main", "ImageUri is not null.");
-//            Intent prediction = new Intent(getActivity(), PredictionActivity.class);
-//            prediction.putExtra("ImageUri", imageUri);
-//            startActivity(prediction);
             Bundle bundle = new Bundle();
             bundle.putParcelable("ImageUri", imageUri);
-            NavHostFragment.findNavController(this).navigate(R.id.action_MainFragment_to_ResultFragment, bundle);
+            NavHostFragment.findNavController(this).navigate(R.id.action_MainFragment_to_EdgeFragment, bundle);
+            // NavHostFragment.findNavController(this).navigate(R.id.action_MainFragment_to_ResultFragment, bundle);
         }
     }
 

@@ -10,6 +10,7 @@
         <entry key="app/src/main/res/layout/activity_result.xml" value="0.1337386018237082" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.2033514492753623" />
         <entry key="app/src/main/res/layout/content_result.xml" value="0.1342451874366768" />
+        <entry key="app/src/main/res/layout/fragment_edge.xml" value="0.27708333333333335" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.2033514492753623" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.1342451874366768" />
         <entry key="app/src/main/res/layout/fragment_prediction.xml" value="0.161231884057971" />
