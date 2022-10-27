@@ -54,6 +54,13 @@ public class ResultFragment extends Fragment {
         // Obtain all information of brands.
         readDescription();
 
+        // Attributes description.
+        String attributeDescription = "What they mean:" + "\n"
+                + "Clinical Sensitivity: Sensitivity to antigen content" + "\n"
+                + "PRA: Positive percent agreement." + "\n"
+                + "Source: https://www.tga.gov.au/products/covid-19/covid-19-tests/covid-19-rapid-antigen-self-tests-home-use/covid-19-rapid-antigen-self-tests-are-approved-australia";
+        binding.textViewAttributes.setText(attributeDescription);
+
         // If the Fragment Receives Bundle Containing Result and Input Image,
         // Then Display them.
         if (getArguments() != null){
@@ -122,9 +129,9 @@ public class ResultFragment extends Fragment {
         result.setReliability(max);
         for (Brand b : brands){
             if (Objects.equals(result.getBoxBrand(), b.getBrand())){
-                result.setDescription("Clinical sensitivity: " + b.getSensitivity() + "\n"
+                result.setDescription("Clinical Sensitivity: " + b.getSensitivity() + "\n"
                         + "PRA: " + b.getPra() + "\n"
-                        + "Test type: " + b.getType() + "\n"
+                        + "Test Type: " + b.getType() + "\n"
                         + "Source Link: " + b.getSource());
                 Log.i("Info", result.getDescription());
             } else {
