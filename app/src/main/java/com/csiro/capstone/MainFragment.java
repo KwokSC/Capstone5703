@@ -61,7 +61,7 @@ public class MainFragment extends Fragment {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         imageUri = result.getData().getData();
-                        imageFile = new File(result.getData().getData().getPath());
+                        imageFile = new File(getActivity().getExternalCacheDir(), result.getData().getData().getPath());
                     }
                 }
             });
@@ -82,11 +82,13 @@ public class MainFragment extends Fragment {
         // If User Capture a Photo or Upload One from Album,
         // Pass It to Prediction Fragment.
         if (imageUri != null && imageFile != null){
-            Log.i("Image", imageUri.getPath());
             Bundle bundle = new Bundle();
             bundle.putParcelable("ImageUri", imageUri);
             bundle.putSerializable("ImageFile", imageFile);
-            // NavHostFragment.findNavController(this).navigate(R.id.action_MainFragment_to_ResultFragment, bundle);
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_MainFragment_to_EdgeFragment, bundle);
+//            NavHostFragment.findNavController(this)
+//                    .navigate(R.id.action_MainFragment_to_ResultFragment, bundle);
         }
     }
 

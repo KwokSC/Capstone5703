@@ -15,17 +15,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.csiro.capstone.databinding.FragmentResultBinding;
+import com.csiro.capstone.entity.Brand;
 import com.csiro.capstone.entity.Result;
 import com.csiro.capstone.ml.Inceptionv3;
 
 import org.tensorflow.lite.support.image.TensorImage;
 import org.tensorflow.lite.support.label.Category;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ResultFragment extends Fragment {
 
@@ -42,6 +50,9 @@ public class ResultFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Obtain all information of brands.
+        readDescription();
 
         // If the Fragment Receives Bundle Containing Result and Input Image,
         // Then Display them.
@@ -109,14 +120,51 @@ public class ResultFragment extends Fragment {
         result.setBoxBrand(brand);
         result.setUploadDate(new Date());
         result.setReliability(max);
+        for (Brand b : brands){
+            if (Objects.equals(result.getBoxBrand(), b.getBrand())){
+                result.setDescription("Clinical sensitivity: " + b.getSensitivity() + "\n"
+                        + "PRA: " + b.getPra() + "\n"
+                        + "Test type: " + b.getType() + "\n"
+                        + "Source Link: " + b.getSource());
+                Log.i("Info", result.getDescription());
+            } else {
+                Log.i("Info", "No brand found.");
+            }
+        }
+
         Log.i("Result", result.toString());
 
         return result;
     }
 
-    private String textRecognition(Uri uri){
+    // Read brand information.
+    private List<Brand> brands = new ArrayList<>();
+    private void readDescription(){
 
-        return "";
+        InputStream is = getResources().openRawResource(R.raw.description);
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(is, Charset.forName("UTF-8"))
+        );
+        String line;
+        try {
+            reader.readLine();
+            while((line = reader.readLine()) != null){
+                String[] tokens = line.split(",");
+                Brand brand = new Brand();
+                brand.setBrand(tokens[0]);
+                brand.setSensitivity(tokens[1]);
+                brand.setApproved(tokens[2]);
+                brand.setPra(tokens[3]);
+                brand.setType(tokens[4]);
+                brand.setWaitingTime(tokens[5]);
+                brand.setRating(tokens[6]);
+                brand.setSource(tokens[7]);
+                brands.add(brand);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        Log.i("Brands", brands.get(0).getBrand());
     }
 
 }

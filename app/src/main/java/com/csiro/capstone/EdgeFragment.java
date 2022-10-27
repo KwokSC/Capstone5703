@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +62,7 @@ public class EdgeFragment extends Fragment {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        imageUri = result.getData().getData();
+                        Log.i("Crop", "Success");
                     }
                 }
             });
@@ -69,31 +71,14 @@ public class EdgeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            // Generate File Name with Current Time.
-            String imageName = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
-
-            // Generate File Object.
-            File outputImage = new File(getActivity().getExternalCacheDir(), imageName+"_cropped.jpg");
-
-            // Write File Object into Cache.
-            Objects.requireNonNull(outputImage.getParentFile()).mkdirs();
 
             imageFile = (File) getArguments().getSerializable("ImageFile");
-            imageUri = FileProvider.getUriForFile(getContext(),"com.example.csiro.fileprovider", imageFile);
+            imageUri = getArguments().getParcelable("ImageUri");
+
+            Log.i("URI", imageUri.getPath());
             Rect rect = findMaxRect(detectEdges(imageUri));
 
-            Intent crop = new Intent("com.android.camera.action.CROP");
-            crop.setDataAndType(imageUri, "image/*");
-            crop.putExtra("outputX", 300);
-            crop.putExtra("outputY", 300);
-            crop.putExtra("aspectX", 1);
-            crop.putExtra("aspectY", 1);
-            crop.putExtra("scale", true);
-            crop.putExtra("return-data", true);
-            crop.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            crop.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            crop.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(outputImage));
-            cropActivityResultLauncher.launch(crop);
+            cropImage(imageUri, rect);
         }
     }
 
@@ -108,8 +93,11 @@ public class EdgeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("ImageUri", imageUri);
+
         binding.nextButton.setOnClickListener(resultView -> NavHostFragment.findNavController(EdgeFragment.this)
-                .navigate(R.id.action_EdgeFragment_to_ResultFragment));
+                .navigate(R.id.action_EdgeFragment_to_ResultFragment, bundle));
     }
 
     @Override
@@ -130,6 +118,7 @@ public class EdgeFragment extends Fragment {
         Mat rgba = new Mat();
 
         Bitmap bitmap = null;
+
         try {
             bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(uri));
         } catch (FileNotFoundException e) {
@@ -193,10 +182,24 @@ public class EdgeFragment extends Fragment {
         );
 
         Rect rect = Imgproc.boundingRect((Mat) contours.get(index));
-
         // Imgproc.rectangle(tmp, rect, new Scalar(0.0, 0.0, 255.0), 4, Imgproc.LINE_8);
-
+        Log.i("Rect", rect.toString());
         return rect;
+    }
+
+    private void cropImage(Uri uri, Rect rect){
+        Intent crop = new Intent("com.android.camera.action.CROP");
+        crop.setDataAndType(imageUri, "image/*");
+        crop.putExtra("aspectX", 1);
+        crop.putExtra("aspectY", 1);
+        crop.putExtra("outputX", rect.width);
+        crop.putExtra("outputY", rect.height);
+        crop.putExtra("scale", true);
+        crop.putExtra("return-data", true);
+        crop.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        crop.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        crop.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        cropActivityResultLauncher.launch(crop);
     }
 
 }
