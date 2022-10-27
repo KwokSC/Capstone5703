@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -25,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.csiro.capstone.databinding.FragmentEdgeBinding;
-import com.csiro.capstone.databinding.FragmentResultBinding;
 
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
@@ -38,12 +36,8 @@ import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 public class EdgeFragment extends Fragment {
 
@@ -73,9 +67,9 @@ public class EdgeFragment extends Fragment {
         if (getArguments() != null) {
 
             imageFile = (File) getArguments().getSerializable("ImageFile");
-            imageUri = getArguments().getParcelable("ImageUri");
+            imageUri = FileProvider.getUriForFile(getContext(), "com.example.csiro.fileprovider", imageFile);
+//            imageUri = getArguments().getParcelable("ImageUri");
 
-            Log.i("URI", imageUri.getPath());
             Rect rect = findMaxRect(detectEdges(imageUri));
 
             cropImage(imageUri, rect);
@@ -115,6 +109,7 @@ public class EdgeFragment extends Fragment {
     }
 
     private Mat detectEdges(Uri uri) {
+
         Mat rgba = new Mat();
 
         Bitmap bitmap = null;
@@ -133,7 +128,6 @@ public class EdgeFragment extends Fragment {
 
         return edges;
     }
-
 
     public Rect findMaxRect(Mat cannyMat) {
 
@@ -158,9 +152,6 @@ public class EdgeFragment extends Fragment {
         // Find the maximum Contour
         for (int i = 0; i < contours.size(); i++) {
 
-            // Largest Size
-            // double area = Imgproc.contourArea(contours.get(i));
-
             // Largest Perimeter
             MatOfPoint2f source = new MatOfPoint2f();
 
@@ -181,8 +172,7 @@ public class EdgeFragment extends Fragment {
                 Imgproc.LINE_AA
         );
 
-        Rect rect = Imgproc.boundingRect((Mat) contours.get(index));
-        // Imgproc.rectangle(tmp, rect, new Scalar(0.0, 0.0, 255.0), 4, Imgproc.LINE_8);
+        Rect rect = Imgproc.boundingRect(contours.get(index));
         Log.i("Rect", rect.toString());
         return rect;
     }

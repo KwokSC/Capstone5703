@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.csiro.capstone.databinding.FragmentMainBinding;
+import com.csiro.capstone.util.UriTransformer;
 
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
@@ -61,7 +62,7 @@ public class MainFragment extends Fragment {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         imageUri = result.getData().getData();
-                        imageFile = new File(getActivity().getExternalCacheDir(), result.getData().getData().getPath());
+                        imageFile = new File(getActivity().getExternalCacheDir(), UriTransformer.getRealFilePath(getActivity(), result.getData().getData()));
                     }
                 }
             });
