@@ -13,14 +13,17 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.csiro.capstone.databinding.FragmentEdgeBinding;
+import com.csiro.capstone.databinding.FragmentResultBinding;
 
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
@@ -31,15 +34,24 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 public class EdgeFragment extends Fragment {
 
     private FragmentEdgeBinding binding;
 
+    // Image Uri.
     private Uri imageUri;
+
+    // Image file.
+    private File imageFile;
 
     // Result Receiver Object.
     ActivityResultLauncher<Intent> cropActivityResultLauncher = registerForActivityResult(
@@ -57,11 +69,30 @@ public class EdgeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            imageUri = getArguments().getParcelable("ImageUri");
+            // Generate File Name with Current Time.
+            String imageName = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
+
+            // Generate File Object.
+            File outputImage = new File(getActivity().getExternalCacheDir(), imageName+"_cropped.jpg");
+
+            // Write File Object into Cache.
+            Objects.requireNonNull(outputImage.getParentFile()).mkdirs();
+
+            imageFile = (File) getArguments().getSerializable("ImageFile");
+            imageUri = FileProvider.getUriForFile(getContext(),"com.example.csiro.fileprovider", imageFile);
             Rect rect = findMaxRect(detectEdges(imageUri));
 
             Intent crop = new Intent("com.android.camera.action.CROP");
             crop.setDataAndType(imageUri, "image/*");
+            crop.putExtra("outputX", 300);
+            crop.putExtra("outputY", 300);
+            crop.putExtra("aspectX", 1);
+            crop.putExtra("aspectY", 1);
+            crop.putExtra("scale", true);
+            crop.putExtra("return-data", true);
+            crop.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            crop.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            crop.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(outputImage));
             cropActivityResultLauncher.launch(crop);
         }
     }
@@ -69,16 +100,16 @@ public class EdgeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edge, container, false);
+        binding = FragmentEdgeBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.confirmButton.setOnClickListener(resultView -> NavHostFragment.findNavController(EdgeFragment.this)
-                .navigate(R.id.action_WelcomeFragment_to_MainFragment));
+        binding.nextButton.setOnClickListener(resultView -> NavHostFragment.findNavController(EdgeFragment.this)
+                .navigate(R.id.action_EdgeFragment_to_ResultFragment));
     }
 
     @Override

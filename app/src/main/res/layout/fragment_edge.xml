@@ -17,11 +17,11 @@
         android:layout_gravity="center"/>
 
     <Button
-        android:id="@+id/confirm_button"
+        android:id="@+id/next_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="@dimen/fab_margin"
         android:layout_gravity="center"
-        android:text="@string/confirm"/>
+        android:text="@string/next"/>
 
 </LinearLayout>
