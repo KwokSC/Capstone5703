@@ -2,6 +2,7 @@ package com.csiro.capstone;
 
 import android.os.Bundle;
 
+import com.csiro.capstone.entity.Brand;
 import com.csiro.capstone.util.ClientConnection;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.opencv.android.OpenCVLoader;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -88,4 +96,5 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -29,8 +30,10 @@ public class WelcomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.welcomeText.startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in));
+
         // Button Click Event: Enter Prediction Layout.
-        binding.enterButton.setOnClickListener(predictionView -> NavHostFragment.findNavController(WelcomeFragment.this)
+        binding.enterButton.setOnClickListener(mainView -> NavHostFragment.findNavController(WelcomeFragment.this)
                 .navigate(R.id.action_WelcomeFragment_to_MainFragment));
     }
 

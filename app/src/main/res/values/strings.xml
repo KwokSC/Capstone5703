@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">RAT Test Box Recognition</string>
+    <string name="app_name">RAT-PEDIA</string>
+    <string name="welcome_title">Easy use, easy access</string>
 
     <!-- Strings used for menu items-->
     <string name="menu_user">User</string>>
@@ -13,9 +14,16 @@
     <string name="result_fragment_label">Result</string>
     <string name="edge_fragment_label">Edge</string>
 
+    <!-- Strings used for components -->
     <string name="camera">Camera</string>
     <string name="album">Album</string>
     <string name="confirm">Confirm</string>
     <string name="enter">Enter</string>
+    <string name="next">Next</string>
+
+    <!-- Strings used for attributes description -->
+    <string name="TGA">Therapeutic Goods Administration</string>
+    <string name="PRA">positive percent agreement</string>
+    <string name="source">https://www.tga.gov.au/products/covid-19/covid-19-tests/covid-19-rapid-antigen-self-tests-home-use/covid-19-rapid-antigen-self-tests-are-approved-australia</string>
 
 </resources>

@@ -2,6 +2,8 @@ package com.csiro.capstone;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,11 +23,24 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.csiro.capstone.databinding.FragmentMainBinding;
+import com.csiro.capstone.util.UriTransformer;
+
+import org.opencv.android.Utils;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -33,10 +48,13 @@ public class MainFragment extends Fragment {
 
     private FragmentMainBinding binding;
 
-    // Variable for Local Image Uri.
+    // Image Uri.
     private Uri imageUri;
 
-    // Result Receiver Object.
+    // Image file.
+    private File imageFile;
+
+    // Result Receiver Object of Album.
     ActivityResultLauncher<Intent> albumActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -44,7 +62,7 @@ public class MainFragment extends Fragment {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         imageUri = result.getData().getData();
-                        Log.e("Pick",imageUri.getPath());
+                        imageFile = new File(getActivity().getExternalCacheDir(), UriTransformer.getRealFilePath(getActivity(), result.getData().getData()));
                     }
                 }
             });
@@ -64,11 +82,14 @@ public class MainFragment extends Fragment {
 
         // If User Capture a Photo or Upload One from Album,
         // Pass It to Prediction Fragment.
-        if (imageUri != null){
+        if (imageUri != null && imageFile != null){
             Bundle bundle = new Bundle();
             bundle.putParcelable("ImageUri", imageUri);
-            NavHostFragment.findNavController(this).navigate(R.id.action_MainFragment_to_EdgeFragment, bundle);
-            // NavHostFragment.findNavController(this).navigate(R.id.action_MainFragment_to_ResultFragment, bundle);
+            bundle.putSerializable("ImageFile", imageFile);
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_MainFragment_to_EdgeFragment, bundle);
+//            NavHostFragment.findNavController(this)
+//                    .navigate(R.id.action_MainFragment_to_ResultFragment, bundle);
         }
     }
 
@@ -87,19 +108,19 @@ public class MainFragment extends Fragment {
                 String imageName = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
 
                 // Generate File Object.
-                File outputImage = new File(getActivity().getExternalCacheDir(), imageName+".jpg");
+                imageFile = new File(getActivity().getExternalCacheDir(), imageName+".jpg");
 
                 // Write File Object into Cache.
-                Objects.requireNonNull(outputImage.getParentFile()).mkdirs();
+                Objects.requireNonNull(imageFile.getParentFile()).mkdirs();
 
                 // Avoid File with the Same Name.
                 try
                 {
-                    if(outputImage.exists())
+                    if(imageFile.exists())
                     {
-                        outputImage.delete();
+                        imageFile.delete();
                     }
-                    boolean a = outputImage.createNewFile();
+                    boolean a = imageFile.createNewFile();
                     Log.i("New File Created", String.valueOf(a));
                 }
                 catch (IOException e)
@@ -110,11 +131,11 @@ public class MainFragment extends Fragment {
                 // Targeting Android Platforms with Different Version.
                 if(Build.VERSION.SDK_INT>=24)
                 {
-                    imageUri = FileProvider.getUriForFile(getContext(),"com.example.csiro.fileprovider", outputImage);
+                    imageUri = FileProvider.getUriForFile(getContext(),"com.example.csiro.fileprovider", imageFile);
                     Log.i("Android Version > 7:",imageUri.getPath());
                 }
                 else {
-                    imageUri = Uri.fromFile(outputImage);
+                    imageUri = Uri.fromFile(imageFile);
                     Log.i("Android Version < 7:",imageUri.getPath());
                 }
 
