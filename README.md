@@ -18,4 +18,6 @@ When successfully install Android Studio, please click the Device Manager button
 2. Simply click the Run - Run app on the top of the window, or press ^(control) + R on Mac/Ctrl + F10 on Windows. Please wait till the gradle building complete and the application will run on the AVD you've installed.
 
 ## Package the application and export it as .apk
-1. To run the application on a physical device, 
+1. To run the application on a physical device, you need to have a .pem file. Here we provide with such a file and you can directly find it in the project root directory.
+2. To package and export the project as .apk file so that it can be installed on Android physical devices, please click the Build - Generate Signed Bundle/APK on the top of the window. Select APK in the popped window and click 'Next'. In the following window, choose the capstone5703.pem file for the key store path attribute. Key store password and key password are all '980518' which key alias is 'capstone5703'. Filling up the blanks, click 'Next'.
+3. Then choose the export destination and select 'release' for 'Build Variants'. After that, click 'Finish' and Android Studio will package the project. You can transfer the exported .apk file to Android phone and install it.
