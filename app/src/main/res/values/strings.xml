@@ -10,9 +10,9 @@
 
     <!-- Strings used for fragments for navigation -->
     <string name="welcome_fragment_label">Welcome</string>
-    <string name="main_fragment_label">Main</string>
+    <string name="main_fragment_label">Instruction</string>
     <string name="result_fragment_label">Result</string>
-    <string name="edge_fragment_label">Edge</string>
+    <string name="edge_fragment_label">Edit Image</string>
 
     <!-- Strings used for components -->
     <string name="camera">Camera</string>
