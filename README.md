@@ -6,7 +6,7 @@ The application is developed with Android Studio Chipmunk 2021.2.1 Patch 1 and i
 
 Android Studio download link: https://developer.android.com/studio
 
-When successfully install Android Studio, please click the Device Manager button on the right side of interface. Then click the Create Device button.
+When successfully install Android Studio, please click the Device Manager button on the right side of interface. Then click the Create Device button. The new window will ask you to selet the hardware. Please choose Pixel XL and click Next. The following window will let you select a system image. Choose release name S with API level of 31 and click Next. At last, please click finish and your AVD will be ready.
 
 
 ## Import the project into Android Studio
