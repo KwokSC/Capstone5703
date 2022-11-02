@@ -67,7 +67,8 @@ public class MainFragment extends Fragment {
                         Uri galleryUri = result.getData().getData();
                         try {
                             Bitmap bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(galleryUri));
-                            createImageFromBitmap(bitmap, imageFile.getName());
+                            Log.i("File Name", imageFile.getPath());
+                            createImageFromBitmap(bitmap, imageFile.getPath());
 
                             // Targeting Android Platforms with Different Version.
                             if(Build.VERSION.SDK_INT>=24)
@@ -131,27 +132,22 @@ public class MainFragment extends Fragment {
                 Objects.requireNonNull(imageFile.getParentFile()).mkdirs();
 
                 // Avoid File with the Same Name.
-                try
-                {
-                    if(imageFile.exists())
-                    {
+                try {
+                    if(imageFile.exists()) {
                         imageFile.delete();
                     }
                     boolean a = imageFile.createNewFile();
                     Log.i("New File Created", String.valueOf(a));
                 }
-                catch (IOException e)
-                {
+                catch (IOException e) {
                     e.printStackTrace();
                 }
 
                 // Targeting Android Platforms with Different Version.
-                if(Build.VERSION.SDK_INT>=24)
-                {
+                if(Build.VERSION.SDK_INT>=24) {
                     imageUri = FileProvider.getUriForFile(getContext(),"com.example.csiro.fileprovider", imageFile);
                     Log.i("Android Version > 7:",imageUri.getPath());
-                }
-                else {
+                } else {
                     imageUri = Uri.fromFile(imageFile);
                     Log.i("Android Version < 7:",imageUri.getPath());
                 }
@@ -178,17 +174,13 @@ public class MainFragment extends Fragment {
                 Objects.requireNonNull(imageFile.getParentFile()).mkdirs();
 
                 // Avoid File with the Same Name.
-                try
-                {
-                    if(imageFile.exists())
-                    {
+                try {
+                    if(imageFile.exists()) {
                         imageFile.delete();
                     }
                     boolean a = imageFile.createNewFile();
                     Log.i("New File Created", String.valueOf(a));
-                }
-                catch (IOException e)
-                {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 

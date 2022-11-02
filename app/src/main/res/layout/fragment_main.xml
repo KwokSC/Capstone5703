@@ -9,21 +9,30 @@
     android:paddingTop="16dp">
 
     <TextView
-        android:layout_weight="1"
         android:id="@+id/textView_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
+        android:layout_weight="1"
+        android:fontFamily="casual"
         android:gravity="center"
-        android:textSize="12pt"/>
+        android:text="@string/instruction_title"
+        android:textColor="@color/cyan_200"
+        android:textSize="12pt"
+        android:textStyle="bold" />
 
-    <ImageView
-        android:layout_weight="6"
-        android:id="@+id/imageView_photo"
+    <TextView
+        android:id="@+id/textView_instruction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:layout_gravity="center"/>
+        android:layout_weight="6"
+        android:fontFamily="casual"
+        android:text="@string/instruction_content"
+        android:textAlignment="viewStart"
+        android:textColor="@color/cyan_200"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"

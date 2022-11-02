@@ -3,6 +3,8 @@ package com.csiro.capstone;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -24,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.csiro.capstone.databinding.FragmentEdgeBinding;
 import com.csiro.capstone.util.UriTransformer;
@@ -68,23 +71,12 @@ public class EdgeFragment extends Fragment {
     // For pass bitmap.
     private Bundle bundle = new Bundle();
 
-    // Result Receiver Object.
-    ActivityResultLauncher<Intent> cropActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Log.i("Crop", "Success");
-                    }
-                }
-            });
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             imageUri = getArguments().getParcelable("ImageUri");
+            Log.i("Uri Authority", imageUri.getAuthority());
         }
     }
 
@@ -105,7 +97,17 @@ public class EdgeFragment extends Fragment {
         binding.cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cropImage(imageUri);
+                Toast.makeText(getContext(), "Please ensure remove background as much as possible.", Toast.LENGTH_SHORT).show();
+                Intent crop = new Intent(Intent.ACTION_EDIT);
+                crop.setDataAndType(imageUri, "image/*");
+                crop.putExtra(MediaStore.EXTRA_OUTPUT, cropUri);
+                List<ResolveInfo> resInfoList = getActivity().getPackageManager().queryIntentActivities(crop, PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo resolveInfo : resInfoList) {
+                    String packageName = resolveInfo.activityInfo.packageName;
+                    getActivity().grantUriPermission(packageName, cropUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    getActivity().grantUriPermission(packageName, imageUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
+                startActivity(crop);
             }
         });
     }
@@ -114,15 +116,25 @@ public class EdgeFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        try {
-            bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(imageUri));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if (cropUri != null){
+            try {
+                bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(cropUri));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(imageUri));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
+
 
         if (rect == null) {
             rect = findMaxRect(detectEdges(imageUri));
             bitmap = Bitmap.createBitmap(bitmap, rect.x, rect.y, rect.width, rect.height);
+            createUriFromBitmap(bitmap);
         }
 
         bundle.putParcelable("ImageUri", cropUri);
@@ -213,15 +225,49 @@ public class EdgeFragment extends Fragment {
         return rect;
     }
 
-    private void cropImage(Uri uri){
-        Intent crop = new Intent("com.android.camera.action.CROP");
-        crop.setDataAndType(imageUri, "image/*");
-        crop.putExtra("scale", true);
-        crop.putExtra("return-data", true);
-        crop.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        crop.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        crop.putExtra(MediaStore.EXTRA_OUTPUT, cropUri);
-        cropActivityResultLauncher.launch(crop);
+
+    private void createUriFromBitmap(Bitmap bitmap){
+        // Generate File Name with Current Time.
+        String imageName = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
+
+        // Generate File Object.
+        File imageFile = new File(getActivity().getExternalCacheDir(), "crop_" + imageName+".jpg");
+
+        // Write File Object into Cache.
+        Objects.requireNonNull(imageFile.getParentFile()).mkdirs();
+
+        // Avoid File with the Same Name.
+        try {
+            if(imageFile.exists()) {
+                imageFile.delete();
+            }
+            boolean a = imageFile.createNewFile();
+            Log.i("New File Created", String.valueOf(a));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Write the bitmap to the file.
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            fileOutputStream.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Targeting Android Platforms with Different Version.
+        if(Build.VERSION.SDK_INT>=24) {
+            cropUri = FileProvider.getUriForFile(getContext(),"com.example.csiro.fileprovider", imageFile);
+            Log.i("Android Version > 7:",cropUri.getPath());
+        } else {
+            cropUri = Uri.fromFile(imageFile);
+            Log.i("Android Version < 7:",cropUri.getPath());
+        }
+
+        Log.i("Crop Uri Authority", cropUri.getAuthority());
     }
 
 }
