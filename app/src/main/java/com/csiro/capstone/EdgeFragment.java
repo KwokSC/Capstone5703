@@ -1,10 +1,12 @@
 package com.csiro.capstone;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -24,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.csiro.capstone.databinding.FragmentEdgeBinding;
+import com.csiro.capstone.util.UriTransformer;
 
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
@@ -34,10 +37,17 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 public class EdgeFragment extends Fragment {
 
@@ -46,8 +56,17 @@ public class EdgeFragment extends Fragment {
     // Image Uri.
     private Uri imageUri;
 
-    // Image file.
-    private File imageFile;
+    // Crop Uri.
+    private Uri cropUri;
+
+    // Contour rectangle.
+    private Rect rect;
+
+    // Bitmap for display.
+    private Bitmap bitmap;
+
+    // For pass bitmap.
+    private Bundle bundle = new Bundle();
 
     // Result Receiver Object.
     ActivityResultLauncher<Intent> cropActivityResultLauncher = registerForActivityResult(
@@ -65,14 +84,7 @@ public class EdgeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
-            imageFile = (File) getArguments().getSerializable("ImageFile");
-            imageUri = FileProvider.getUriForFile(getContext(), "com.example.csiro.fileprovider", imageFile);
-//            imageUri = getArguments().getParcelable("ImageUri");
-
-            Rect rect = findMaxRect(detectEdges(imageUri));
-
-            cropImage(imageUri, rect);
+            imageUri = getArguments().getParcelable("ImageUri");
         }
     }
 
@@ -87,25 +99,49 @@ public class EdgeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("ImageUri", imageUri);
-
         binding.nextButton.setOnClickListener(resultView -> NavHostFragment.findNavController(EdgeFragment.this)
                 .navigate(R.id.action_EdgeFragment_to_ResultFragment, bundle));
+
+        binding.cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cropImage(imageUri);
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        if (imageUri != null){
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(imageUri));
-                binding.imageViewCrop.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+        try {
+            bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(imageUri));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
+
+        if (rect == null) {
+            rect = findMaxRect(detectEdges(imageUri));
+            bitmap = Bitmap.createBitmap(bitmap, rect.x, rect.y, rect.width, rect.height);
+        }
+
+        bundle.putParcelable("ImageUri", cropUri);
+        binding.imageViewCrop.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        imageUri = null;
+        bitmap = null;
+        rect = null;
+        bundle = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     private Mat detectEdges(Uri uri) {
@@ -177,18 +213,14 @@ public class EdgeFragment extends Fragment {
         return rect;
     }
 
-    private void cropImage(Uri uri, Rect rect){
+    private void cropImage(Uri uri){
         Intent crop = new Intent("com.android.camera.action.CROP");
         crop.setDataAndType(imageUri, "image/*");
-        crop.putExtra("aspectX", 1);
-        crop.putExtra("aspectY", 1);
-        crop.putExtra("outputX", rect.width);
-        crop.putExtra("outputY", rect.height);
         crop.putExtra("scale", true);
         crop.putExtra("return-data", true);
         crop.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         crop.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        crop.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        crop.putExtra(MediaStore.EXTRA_OUTPUT, cropUri);
         cropActivityResultLauncher.launch(crop);
     }
 

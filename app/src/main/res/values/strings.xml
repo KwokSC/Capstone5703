@@ -20,6 +20,7 @@
     <string name="confirm">Confirm</string>
     <string name="enter">Enter</string>
     <string name="next">Next</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Strings used for attributes description -->
     <string name="TGA">Therapeutic Goods Administration</string>
