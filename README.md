@@ -11,9 +11,11 @@ When successfully install Android Studio, please click the Device Manager button
 ## Import the project into Android Studio
 1. Once you finished setting Android Studio environment and AVD configuration, you can go to project management window and click 'Get from VCS'. Then, paste https://github.com/KwokSC/Capstone5703.git below to the URL textbox and choose the local directory that you would like to save the project to. 
 2. Another way to clone this repository is using `git clone https://github.com/KwokSC/Capstone5703.git <local directory>` to manually obtain this project. (Please replace `<local directory>` to your personalized local directory) After successful clone, you can use import this project by going to Android Studio project managment window and click 'Open'. Subsequently, please locate to the directory you choosed before to import the project.
-3. 
+3. When complete the project import, Android Studio will automatically configure dependency and plugins. Please wait until the status checking below the window finished. (Gradle building) Afterwards, you're all set up.
 
 ## Running the application on AVD
-
+1. To run the application, please ensure you successfully follow the steps in the previous section, including AVD creation and project import.
+2. Simply click the Run - Run app on the top of the window, or press ^(control) + R on Mac/Ctrl + F10 on Windows. Please wait till the gradle building complete and the application will run on the AVD you've installed.
 
 ## Package the application and export it as .apk
+1. To run the application on a physical device, 
