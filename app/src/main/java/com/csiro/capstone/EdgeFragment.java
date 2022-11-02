@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -46,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class EdgeFragment extends Fragment {
 
@@ -54,8 +56,8 @@ public class EdgeFragment extends Fragment {
     // Image Uri.
     private Uri imageUri;
 
-    // Image File
-    private File imageFile;
+    // Crop Uri.
+    private Uri cropUri;
 
     // Contour rectangle.
     private Rect rect;
@@ -82,14 +84,7 @@ public class EdgeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
             imageUri = getArguments().getParcelable("ImageUri");
-
-            try {
-                bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(imageUri));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -119,11 +114,18 @@ public class EdgeFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        try {
+            bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(imageUri));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         if (rect == null) {
             rect = findMaxRect(detectEdges(imageUri));
             bitmap = Bitmap.createBitmap(bitmap, rect.x, rect.y, rect.width, rect.height);
         }
 
+        bundle.putParcelable("ImageUri", cropUri);
         binding.imageViewCrop.setImageBitmap(bitmap);
     }
 
@@ -214,31 +216,12 @@ public class EdgeFragment extends Fragment {
     private void cropImage(Uri uri){
         Intent crop = new Intent("com.android.camera.action.CROP");
         crop.setDataAndType(imageUri, "image/*");
-        crop.putExtra("aspectX", 1);
-        crop.putExtra("aspectY", 1);
         crop.putExtra("scale", true);
         crop.putExtra("return-data", true);
         crop.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         crop.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        crop.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        crop.putExtra(MediaStore.EXTRA_OUTPUT, cropUri);
         cropActivityResultLauncher.launch(crop);
-    }
-
-    public File createImageFromBitmap(Bitmap bitmap) {
-        String fileName = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
-        fileName = "crop_" + fileName;
-        try {
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            FileOutputStream fo = getActivity().openFileOutput(fileName, Context.MODE_PRIVATE);
-            fo.write(bytes.toByteArray());
-            // Close file output.
-            fo.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            fileName = null;
-        }
-        return new File(fileName);
     }
 
 }
