@@ -22,6 +22,10 @@
     <string name="next">Next</string>
     <string name="cancel">Cancel</string>
 
+    <!-- Strings used for application instruction -->
+    <string name="instruction_title">How to use?</string>
+    <string name="instruction_content">1. Choose the photo containing a test box you would like to know about further.\n2. You have two ways of uploading your photo: camera or album.\n3. The application will automatically detect the test box inside the image.\n4. If display image is not appropriately cropped, please cancel and manually crop it.\n5. If it has been automatically and correctly cropped, please click confirm.\n6. The result page will give you precise and detailed information of the test box.</string>
+
     <!-- Strings used for attributes description -->
     <string name="TGA">Therapeutic Goods Administration</string>
     <string name="PRA">positive percent agreement</string>
