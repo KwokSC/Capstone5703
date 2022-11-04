@@ -65,9 +65,11 @@ public class ResultFragment extends Fragment {
         // Then Display them.
         if (getArguments() != null){
             Result result = predict(getArguments().getParcelable("ImageUri"));
-            binding.imageViewPhoto.setImageBitmap(result.getBitmap());
-            binding.textViewDescription.setText(result.getDescription());
-            binding.textViewPrediction.setText(result.getBoxBrand());
+            if (result != null){
+                binding.imageViewPhoto.setImageBitmap(result.getBitmap());
+                binding.textViewDescription.setText(result.getDescription());
+                binding.textViewPrediction.setText(result.getBoxBrand());
+            }
         }
 
         binding.confirmButton.setOnClickListener(predictionView -> NavHostFragment.findNavController(ResultFragment.this)
