@@ -103,7 +103,7 @@ public class MainFragment extends Fragment {
 
         // If User Capture a Photo or Upload One from Album,
         // Pass it to Edge Fragment.
-        if (imageUri != null){
+        if (imageUri != null && imageFile.length() != 0){
             Bundle bundle = new Bundle();
             bundle.putParcelable("ImageUri", imageUri);
             NavHostFragment.findNavController(this)
